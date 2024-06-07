@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'views/EntryScreens/splash.dart';
+import 'package:crypto_kiosque/views/EntryScreens/onboardign.dart';
 
 void main() async {
   runApp(const App());
@@ -13,7 +14,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: Splash(),
+      home: const Onboard(),
     );
   }
 }
