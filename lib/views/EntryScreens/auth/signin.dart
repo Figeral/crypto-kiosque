@@ -1,20 +1,19 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
-import 'package:crypto_kiosque/views/EntryScreens/auth/signin.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/recovery.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/confirmation.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SigninPage> createState() => _SigninPageState();
 }
 
-class _LoginState extends State<Login> {
+class _SigninPageState extends State<SigninPage> {
   bool isObscure = false;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -28,7 +27,7 @@ class _LoginState extends State<Login> {
         child: Column(
           children: [
             SvgPicture.asset(
-              "assets/images/login.svg",
+              "assets/images/signIn.svg",
               width: 400,
               alignment: Alignment.topCenter,
             ),
@@ -37,13 +36,13 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   const Text(
-                    "welcome back !",
+                    "Let\'s get started ",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   SizedBox(
                     width: sWidth * 0.68,
                     child: const Text(
-                      "Please login to your account or create one ",
+                      "A confirmation code will be send to your e-mail address",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.normal, color: Colors.grey),
@@ -70,9 +69,26 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                       child: TextFormField(
-                        obscureText: isObscure,
+                        decoration: const InputDecoration(
+                          prefixIcon: CountryCodePicker(
+                            dialogSize: Size(500, 450),
+                            hideMainText: true,
+                            showFlagMain: true,
+                            showFlag: true,
+                            initialSelection: 'CM',
+                            showOnlyCountryWhenClosed: true,
+                          ),
+                          hintText: "Telephone",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
+                      child: TextFormField(
                         decoration: InputDecoration(
-                          hintText: "Password",
                           suffix: GestureDetector(
                             onTap: () {
                               setState(() {
@@ -83,6 +99,7 @@ class _LoginState extends State<Login> {
                                 ? const Icon(Icons.visibility_off)
                                 : const Icon(Icons.visibility),
                           ),
+                          hintText: "Password",
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
@@ -90,17 +107,25 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(sWidth * 0.60, 0, 0, 0),
-                      child: GestureDetector(
-                          //style: ButtonStyle(),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => RecoveryPage()));
-                          },
-                          child: const Text(
-                            "forgot Password ?",
-                            style: TextStyle(color: AppColors.tapButton),
-                          )),
+                      padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          suffix: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isObscure = !isObscure;
+                              });
+                            },
+                            child: isObscure
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility),
+                          ),
+                          hintText: "Confirmation",
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10.0,
@@ -124,8 +149,7 @@ class _LoginState extends State<Login> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 behavior: SnackBarBehavior.floating,
-                                content: const Text(
-                                    "A confirmation code was send to your address"),
+                                content: Text("processing data"),
                                 action: SnackBarAction(
                                   label: "undo",
                                   onPressed: () {},
@@ -140,7 +164,7 @@ class _LoginState extends State<Login> {
                           }
                         },
                         child: Text(
-                          'Login',
+                          'SignIn',
                           style: TextStyle(
                               color: Theme.of(context)
                                   .scaffoldBackgroundColor
@@ -157,16 +181,16 @@ class _LoginState extends State<Login> {
               child: GestureDetector(
                   //style: ButtonStyle(),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SigninPage()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const Login()));
                   },
                   child: const Row(
                     children: [
                       Text(
-                        "Don't have an account? ",
+                        "Already have an account? ",
                       ),
                       Text(
-                        "SignIn",
+                        "Login",
                         style: TextStyle(
                             color: AppColors.tapButton,
                             fontWeight: FontWeight.bold),

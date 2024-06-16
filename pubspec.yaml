@@ -39,6 +39,7 @@ dependencies:
   flutter_native_splash: ^2.4.0
   flutter_launcher_icons: ^0.13.1
   flutter_svg: ^2.0.10+1
+  country_code_picker: ^3.0.0
  
   # # gif_view: ^0.4.3
   # gif: ^2.3.0
