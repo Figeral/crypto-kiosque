@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'views/EntryScreens/splash.dart';
 import 'package:crypto_kiosque/views/EntryScreens/onboardign.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/Maincontent.dart';
 
 void main() async {
   runApp(const App());
@@ -15,6 +15,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const Onboard(),
+      // home: const MainContent(),
     );
   }
 }

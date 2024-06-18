@@ -184,7 +184,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         width: 40,
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color: Color.fromARGB(24, 150, 20, 183),
+            color: AppColors.verylightpurple,
             borderRadius: BorderRadius.circular(60)),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
