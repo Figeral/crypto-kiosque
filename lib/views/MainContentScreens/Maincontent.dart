@@ -41,12 +41,23 @@ class _MainContentState extends State<MainContent> {
       maintainBottomViewPadding: true,
       child: Scaffold(
         body: body[_currentIndex],
-        bottomNavigationBar: NavigationBar(
-          indicatorColor: AppColors.verylightpurple,
-          destinations: List.of(navItem()),
-          selectedIndex: _currentIndex,
-          onDestinationSelected: (value) =>
-              setState(() => _currentIndex = value),
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.only(bottom: 20, left: 5, right: 5),
+          width: 500,
+          decoration: BoxDecoration(
+              // color: Theme.of(context).scaffoldBackgroundColor,
+              color: Colors.transparent,
+              border: Border.all(width: 5, color: AppColors.deepPurple),
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+          child: NavigationBar(
+            backgroundColor: Colors.transparent,
+            indicatorColor: AppColors.verylightpurple,
+            elevation: 0,
+            destinations: List.of(navItem()),
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (value) =>
+                setState(() => _currentIndex = value),
+          ),
         ),
       ),
     );

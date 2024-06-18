@@ -59,20 +59,27 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 10,
               child: Container(
+                width: double.infinity,
                 decoration: const BoxDecoration(
                   boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, -1),
-                      blurRadius: 5,
-                    ),
+                    BoxShadow(),
                   ],
                   borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                   color: Colors.white,
                 ),
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [Container()],
-                  ),
+                  child: Column(children: [
+                    Container(
+                      color: Colors.orange.shade100,
+                      width: 400,
+                      height: 800,
+                    ),
+                    Container(
+                      color: Colors.amber.shade100,
+                      width: 400,
+                      height: 800,
+                    )
+                  ]),
                 ),
               ),
             )
