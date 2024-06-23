@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/principal_action_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,21 +19,7 @@ class _HomePageState extends State<HomePage> {
     final sWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.deepPurple,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 20),
-            child: const CircleAvatar(
-              backgroundImage: AssetImage("assets/images/user.png"),
-            ),
-          )
-        ],
-      ),
+      floatingActionButton: PrimaryActionButton(context: context),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -68,18 +55,21 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 child: SingleChildScrollView(
-                  child: Column(children: [
-                    Container(
-                      color: Colors.orange.shade100,
-                      width: 400,
-                      height: 800,
-                    ),
-                    Container(
-                      color: Colors.amber.shade100,
-                      width: 400,
-                      height: 800,
-                    )
-                  ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Column(children: [
+                      Container(
+                        color: Colors.orange.shade100,
+                        width: 400,
+                        height: 800,
+                      ),
+                      Container(
+                        color: Colors.amber.shade100,
+                        width: 400,
+                        height: 800,
+                      )
+                    ]),
+                  ),
                 ),
               ),
             )

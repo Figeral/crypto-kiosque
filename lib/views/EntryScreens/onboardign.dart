@@ -59,30 +59,7 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
                 image: "assets/images/Coins-amico.png",
                 text:
                     "page3 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
-                button: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const Login()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.lightPurple,
-                    minimumSize: Size(
-                      sWidth * 0.6,
-                      60.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: const Text(
-                    'Commencer',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
+                button: button(context, sWidth),
               ),
             ],
           ),
@@ -142,6 +119,33 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  ElevatedButton button(BuildContext context, double sWidth) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const Login()));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.lightPurple,
+        minimumSize: Size(
+          sWidth * 0.6,
+          60.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: const Text(
+        'Commencer',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          fontSize: 20,
+        ),
       ),
     );
   }

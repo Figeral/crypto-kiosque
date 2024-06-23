@@ -1,11 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/home.dart';
 import 'package:crypto_kiosque/models/app_modal/destion_icons.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/setting.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/history_page.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/support_client.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/home.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/setting.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/history%20page/history_page.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/support_client%20screen/support_client.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/principal_action_button.dart';
 
 class MainContent extends StatefulWidget {
   const MainContent({super.key});
@@ -40,19 +41,28 @@ class _MainContentState extends State<MainContent> {
     return SafeArea(
       maintainBottomViewPadding: true,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: _currentIndex == 0
+              ? AppColors.deepPurple
+              : Theme.of(context).scaffoldBackgroundColor,
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {},
+          ),
+          actions: [
+            Container(
+              margin: const EdgeInsets.only(right: 20),
+              child: const CircleAvatar(
+                backgroundImage: AssetImage("assets/images/user.png"),
+              ),
+            )
+          ],
+        ),
         body: body[_currentIndex],
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(bottom: 20, left: 5, right: 5),
-          width: 500,
-          decoration: BoxDecoration(
-              // color: Theme.of(context).scaffoldBackgroundColor,
-              color: Colors.transparent,
-              border: Border.all(width: 5, color: AppColors.deepPurple),
-              borderRadius: BorderRadius.all(Radius.circular(25))),
+        bottomNavigationBar: SafeArea(
           child: NavigationBar(
             backgroundColor: Colors.transparent,
             indicatorColor: AppColors.verylightpurple,
-            elevation: 0,
             destinations: List.of(navItem()),
             selectedIndex: _currentIndex,
             onDestinationSelected: (value) =>
