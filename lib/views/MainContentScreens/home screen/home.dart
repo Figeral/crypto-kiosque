@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/principal_action_button.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     final sWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      floatingActionButton: PrimaryActionButton(context: context),
+      floatingActionButton: TransactionActionButton(context: context),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

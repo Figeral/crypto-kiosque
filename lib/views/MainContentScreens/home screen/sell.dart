@@ -10,10 +10,6 @@ class SellTransaction extends StatefulWidget {
 class _SellTransactionState extends State<SellTransaction> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("sell crypto"),
-      ),
-    );
+    return Container();
   }
 }

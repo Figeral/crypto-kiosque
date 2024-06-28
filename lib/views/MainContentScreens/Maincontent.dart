@@ -5,8 +5,8 @@ import 'package:crypto_kiosque/models/app_modal/destion_icons.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/home.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/setting.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/history_page.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/support_client%20screen/support_client.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/principal_action_button.dart';
 
 class MainContent extends StatefulWidget {
   const MainContent({super.key});
@@ -39,7 +39,7 @@ class _MainContentState extends State<MainContent> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      maintainBottomViewPadding: true,
+      // maintainBottomViewPadding: true,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: _currentIndex == 0

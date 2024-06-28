@@ -57,8 +57,7 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
                 sHeight: sHeight,
                 sWidth: sWidth,
                 image: "assets/images/Coins-amico.png",
-                text:
-                    "page3 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
+                text: "",
                 button: button(context, sWidth),
               ),
             ],
