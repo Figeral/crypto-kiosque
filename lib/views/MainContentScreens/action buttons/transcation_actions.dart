@@ -67,7 +67,7 @@ class TransactionActionButton extends StatelessWidget {
               color: AppColors.verylightpurple,
               child: SizedBox(
                   width: parentSize.width,
-                  height: parentSize.height * 0.8,
+                  height: parentSize.height * 0.9,
                   child: child),
             ));
   }

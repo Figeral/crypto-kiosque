@@ -15,8 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButton: TransactionActionButton(context: context),
@@ -46,7 +45,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 10,
               child: Container(
-                width: double.infinity,
+                width: screenSize.width,
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(),
@@ -55,20 +54,24 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Column(children: [
-                      Container(
-                        color: Colors.orange.shade100,
-                        width: 400,
-                        height: 800,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                      Container(
-                        color: Colors.amber.shade100,
-                        width: 400,
-                        height: 800,
-                      )
-                    ]),
+                      Column(children: [
+                        Container(
+                          color: Colors.orange.shade100,
+                          width: screenSize.width * 0.85,
+                          height: 800,
+                        ),
+                        Container(
+                          color: Colors.black38,
+                          width: screenSize.width * 0.85,
+                          height: 800,
+                        )
+                      ]),
+                    ],
                   ),
                 ),
               ),
