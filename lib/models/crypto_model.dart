@@ -24,7 +24,7 @@ class CryptoModel {
     this.atl,
     this.atlChangePercentage,
     this.atlDate,
-    this.roi,
+    //required this.roi,
     this.lastUpdated,
   });
 
@@ -52,7 +52,7 @@ class CryptoModel {
   double? atl;
   double? atlChangePercentage;
   DateTime? atlDate;
-  Roi? roi;
+  // Roi roi;
   DateTime? lastUpdated;
 
   factory CryptoModel.fromJson(Map<String, dynamic> json) => CryptoModel(
@@ -63,9 +63,7 @@ class CryptoModel {
         currentPrice: json["current_price"].toDouble(),
         marketCap: json["market_cap"],
         marketCapRank: json["market_cap_rank"],
-        fullyDilutedValuation: json["fully_diluted_valuation"] == null
-            ? null
-            : json["fully_diluted_valuation"],
+        fullyDilutedValuation: json["fully_diluted_valuation"] ?? 0,
         totalVolume: json["total_volume"].toDouble(),
         high24H: json["high_24h"].toDouble(),
         low24H: json["low_24h"].toDouble(),
@@ -76,18 +74,14 @@ class CryptoModel {
         marketCapChangePercentage24H:
             json["market_cap_change_percentage_24h"].toDouble(),
         circulatingSupply: json["circulating_supply"].toDouble(),
-        totalSupply: json["total_supply"] == null
-            ? null
-            : json["total_supply"].toDouble(),
-        maxSupply:
-            json["max_supply"] == null ? null : json["max_supply"].toDouble(),
-        ath: json["ath"].toDouble(),
+        totalSupply: json["total_supply"] ?? 0,
+        maxSupply: json["max_supply"] ?? 0,
         athChangePercentage: json["ath_change_percentage"].toDouble(),
         athDate: DateTime.parse(json["ath_date"]),
         atl: json["atl"].toDouble(),
         atlChangePercentage: json["atl_change_percentage"].toDouble(),
         atlDate: DateTime.parse(json["atl_date"]),
-        roi: json["roi"] == null ? null : Roi.fromJson(json["roi"]),
+        // roi: json["roi"] == null ? Roi.sample() : Roi.fromJson(json["roi"]),
         lastUpdated: DateTime.parse(json["last_updated"]),
       );
 
@@ -99,8 +93,7 @@ class CryptoModel {
         "current_price": currentPrice,
         "market_cap": marketCap,
         "market_cap_rank": marketCapRank,
-        "fully_diluted_valuation":
-            fullyDilutedValuation == null ? null : fullyDilutedValuation,
+        "fully_diluted_valuation": fullyDilutedValuation ?? 0,
         "total_volume": totalVolume,
         "high_24h": high24H,
         "low_24h": low24H,
@@ -109,15 +102,15 @@ class CryptoModel {
         "market_cap_change_24h": marketCapChange24H,
         "market_cap_change_percentage_24h": marketCapChangePercentage24H,
         "circulating_supply": circulatingSupply,
-        "total_supply": totalSupply == null ? null : totalSupply,
-        "max_supply": maxSupply == null ? null : maxSupply,
+        "total_supply": totalSupply ?? 0,
+        "max_supply": maxSupply ?? 0,
         "ath": ath,
         "ath_change_percentage": athChangePercentage,
         "ath_date": athDate?.toIso8601String(),
         "atl": atl,
         "atl_change_percentage": atlChangePercentage,
         "atl_date": atlDate?.toIso8601String(),
-        "roi": roi == null ? null : roi?.toJson(),
+        // "roi": roi == null ? Roi.sample() : roi?.toJson(),
         "last_updated": lastUpdated?.toIso8601String(),
       };
 }
@@ -132,7 +125,10 @@ class Roi {
   double? times;
   Currency? currency;
   double? percentage;
-
+  Roi.sample() {
+    currency = Currency.NONE;
+    percentage = 00;
+  }
   factory Roi.fromJson(Map<String, dynamic> json) => Roi(
         times: json["times"].toDouble(),
         currency: currencyValues.map[json["currency"]],
@@ -146,7 +142,7 @@ class Roi {
       };
 }
 
-enum Currency { BTC, USD, ETH }
+enum Currency { BTC, USD, ETH, NONE }
 
 final currencyValues =
     EnumValues({"btc": Currency.BTC, "eth": Currency.ETH, "usd": Currency.USD});

@@ -5,7 +5,21 @@ import 'package:http/http.dart' as http;
 import 'package:crypto_kiosque/models/crypto_model.dart';
 import 'package:crypto_kiosque/Configs/crypto_endpoint.dart';
 
+///Implementation of a Singleton class cuz this class is resource draining , hence will be great to only have on instance of it
 class CryptoViewModel {
+  //Creation of broadcasting stream
+
+  final _controller = StreamController.broadcast();
+  Stream<dynamic> get stream => _controller.stream;
+  void addStream() async => _controller.sink.add(await response);
+
+//Creation of the Singleton class
+  static final _instance = CryptoViewModel._();
+  factory CryptoViewModel() {
+    return _instance;
+  }
+  CryptoViewModel._();
+
   Future<List<dynamic>> fetchCrypto() async {
     final response = await http.get(Uri.parse(CryptoEndPoint().endPoint));
     return await jsonDecode(response.body) as List;
@@ -30,9 +44,6 @@ class CryptoViewModel {
               crypto.priceChange24H,
               crypto.priceChangePercentage24H,
               crypto.lastUpdated,
-              crypto.roi?.currency ?? 0,
-              crypto.roi?.percentage ?? 00,
-              crypto.roi?.times ?? DateTime.now(),
               crypto.marketCapChange24H,
               crypto.marketCapChangePercentage24H,
               crypto.totalVolume
@@ -42,12 +53,4 @@ class CryptoViewModel {
     print("here is data ${t.first} \n \n");
     return t;
   }
-}
-
-class StateController {
-  static final StateController _instance = StateController._internal();
-  factory StateController() {
-    return _instance;
-  }
-  StateController._internal();
 }

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
 
 class BuyTransaction extends StatefulWidget {
   const BuyTransaction({super.key});
@@ -12,11 +13,12 @@ class BuyTransaction extends StatefulWidget {
 }
 
 class _BuyTransactionState extends State<BuyTransaction> {
-  final cryptoVm = CryptoViewModel();
+  static final vm = CryptoViewModel();
+  final listener = vm.stream.listen((event) {});
   @override
   void initState() {
     super.initState();
-    cryptoVm.response.then((value) => print(value.first));
+    vm.addStream();
   }
 
   @override
@@ -66,11 +68,13 @@ class _BuyTransactionState extends State<BuyTransaction> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    showDialog(
+                    listener.onData((data) {
+                      print(" Data from Listener $data");
+                    showSearch(
                         context: context,
-                        builder: (BuildContext ctx) => SimpleDialog(
-                              title: Text("wander foot"),
-                            ));
+                        delegate: CryptoList(data: data),
+                      );
+                    });
                   },
                   child: const Text("Choose Crypto "),
                 )
