@@ -40,33 +40,35 @@ class _MainContentState extends State<MainContent> {
   Widget build(BuildContext context) {
     return SafeArea(
       // maintainBottomViewPadding: true,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: _currentIndex == 0
-              ? AppColors.deepPurple
-              : Theme.of(context).scaffoldBackgroundColor,
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: _currentIndex == 0
+                ? AppColors.deepPurple
+                : Theme.of(context).scaffoldBackgroundColor,
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            actions: [
+              Container(
+                margin: const EdgeInsets.only(right: 20),
+                child: const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/user.png"),
+                ),
+              )
+            ],
           ),
-          actions: [
-            Container(
-              margin: const EdgeInsets.only(right: 20),
-              child: const CircleAvatar(
-                backgroundImage: AssetImage("assets/images/user.png"),
-              ),
-            )
-          ],
-        ),
-        body: body[_currentIndex],
-        bottomNavigationBar: SafeArea(
-          child: NavigationBar(
-            backgroundColor: Colors.transparent,
-            indicatorColor: AppColors.verylightpurple,
-            destinations: List.of(navItem()),
-            selectedIndex: _currentIndex,
-            onDestinationSelected: (value) =>
-                setState(() => _currentIndex = value),
+          body: SafeArea(child: body[_currentIndex]),
+          bottomNavigationBar: SafeArea(
+            child: NavigationBar(
+              backgroundColor: Colors.transparent,
+              indicatorColor: AppColors.verylightpurple,
+              destinations: List.of(navItem()),
+              selectedIndex: _currentIndex,
+              onDestinationSelected: (value) =>
+                  setState(() => _currentIndex = value),
+            ),
           ),
         ),
       ),

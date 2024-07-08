@@ -18,7 +18,6 @@ class _BuyTransactionState extends State<BuyTransaction> {
   @override
   void initState() {
     super.initState();
-    vm.addStream();
   }
 
   @override
@@ -67,12 +66,13 @@ class _BuyTransactionState extends State<BuyTransaction> {
                   height: 100,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    listener.onData((data) {
+                  onPressed: () async {
+                    await vm.addStream();
+                    listener.onData((data) async {
                       print(" Data from Listener $data");
-                    showSearch(
+                      await showSearch(
                         context: context,
-                        delegate: CryptoList(data: data),
+                        delegate: CryptoList(searchList: data),
                       );
                     });
                   },
