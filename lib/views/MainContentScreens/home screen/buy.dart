@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
@@ -15,31 +18,38 @@ class BuyTransaction extends StatefulWidget {
 class _BuyTransactionState extends State<BuyTransaction> {
   static final vm = CryptoViewModel();
   final listener = vm.stream.listen((event) {});
+  String? _selectedOption = 'MTN Mobile Money';
+  final List<String> _options = [
+    'MTN Mobile Money',
+    'Orange Mobile Money',
+  ];
+  int _textCounter = 0;
+  final _controller = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.forEach((element) => element.dispose());
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return Column(
       children: [
-        // const SizedBox(
-        //   height: 15,
-        // ),
-        // const Divider(
-        //   height: 10,
-        //   thickness: 05,
-        //   indent: 180,
-        //   endIndent: 180,
-        // ),
-        const SizedBox(
-          height: 20,
-        ),
-        appBar(context),
-        const SizedBox(
-          height: 15,
+        Padding(
+          padding: const EdgeInsets.only(top: 20, bottom: 15),
+          child: appBar(context),
         ),
         const Divider(
           height: 10,
@@ -53,7 +63,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                 SizedBox(
                   width: screenSize.width * 0.68,
                   child: Text(
-                    "Agent must have client's cash before \n handling any purchase Transaction",
+                    "Agent must have client's cash before  handling any purchase Transaction",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
@@ -65,24 +75,122 @@ class _BuyTransactionState extends State<BuyTransaction> {
                 const SizedBox(
                   height: 100,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await vm.addStream();
-                    listener.onData((data) async {
-                      print(" Data from Listener $data");
-                      await showSearch(
-                        context: context,
-                        delegate: CryptoList(searchList: data),
-                      );
-                    });
-                  },
-                  child: const Text("Choose Crypto "),
-                )
+                SizedBox(
+                  width: screenSize.width * 0.85,
+                  child: Form(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Wallet Address'),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: screenSize.width * 0.7,
+                            child: TextField(
+                              controller: _controller[0],
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                ),
+                                hintText: 'Scan client wallet qr code',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.qr_code_scanner_sharp))
+                        ],
+                      ),
+                      const Text('Phone Number'),
+                      const SizedBox(height: 8.0),
+                      TextField(
+                        onChanged: (value) => setState(() =>
+                            _textCounter = _controller[1].value.text.length),
+                        controller: _controller[1],
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(9),
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
+                            hintText: 'Mobile Money number',
+                            suffix: Text("${_textCounter}/9")),
+                      ),
+                      const Text('First Name'),
+                      const SizedBox(height: 8.0),
+                      TextField(
+                        controller: _controller[2],
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          hintText: 'Enter your first name',
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text('Mobile Money'),
+                      dropDownButton(screenSize),
+                      chooseCrypto(context),
+                      const SizedBox(height: 16.0),
+                    ],
+                  )),
+                ),
               ],
             ),
           ),
         )
       ],
+    );
+  }
+
+  SizedBox dropDownButton(Size screenSize) {
+    return SizedBox(
+      width: screenSize.width * 0.5,
+      child: DropdownButtonFormField<String>(
+        value: _selectedOption,
+        elevation: 10,
+        onChanged: (newValue) {
+          print(_selectedOption);
+
+          _selectedOption = newValue!;
+        },
+        items: _options.map((option) {
+          return DropdownMenuItem<String>(
+            value: option,
+            child: Text(option),
+          );
+        }).toList(),
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton chooseCrypto(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        await vm.addStream();
+        listener.onData((data) async {
+          await showSearch(
+            context: context,
+            delegate: CryptoList(searchList: data),
+          );
+        });
+      },
+      child: const Text("Choose Crypto "),
     );
   }
 

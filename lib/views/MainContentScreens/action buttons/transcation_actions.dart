@@ -64,7 +64,7 @@ class TransactionActionButton extends StatelessWidget {
         isScrollControlled: true,
         context: context,
         builder: (context) => Container(
-              color: AppColors.verylightpurple,
+              //color: Colors.white,
               child: SizedBox(
                   width: parentSize.width,
                   height: parentSize.height * 0.9,
