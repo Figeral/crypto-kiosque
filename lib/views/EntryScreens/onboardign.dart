@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
@@ -31,90 +32,98 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          PageView(
-            onPageChanged: (value) => setState(() {
-              _pageIndex = value;
-            }),
-            controller: _pageController,
-            children: [
-              PageDetail(
-                sHeight: sHeight,
-                sWidth: sWidth,
-                image: "assets/images/BitcoinP2P.png",
-                text:
-                    "page1 /nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
-              ),
-              PageDetail(
-                sHeight: sHeight,
-                sWidth: sWidth,
-                image: "assets/images/Server.png",
-                text:
-                    "page2 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
-              ),
-              PageDetail(
-                sHeight: sHeight,
-                sWidth: sWidth,
-                image: "assets/images/Coins-amico.png",
-                text: "page1 /nLorem ipsum dolor sit amet, consectetur",
-                button: button(context, sWidth),
-              ),
-            ],
-          ),
-          Container(
-            alignment: const Alignment(0, 0.8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Expanded(
+            flex: 7,
+            child: PageView(
+              onPageChanged: (value) => setState(() {
+                _pageIndex = value;
+              }),
+              controller: _pageController,
               children: [
-                Visibility(
-                  visible: _pageIndex > 0 ? true : false,
-                  child: InkWell(
-                    onTap: () {
-                      _pageController.previousPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeIn);
-                    },
-                    child: const SizedBox(
-                      width: 55,
-                      child: Text("prev"),
-                    ),
-                  ),
+                PageDetail(
+                  sHeight: sHeight,
+                  sWidth: sWidth,
+                  image: "assets/images/BitcoinP2P.png",
+                  text:
+                      "page1 /nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
                 ),
-                SmoothPageIndicator(
-                  effect: const WormEffect(
-                      activeDotColor: Colors.deepPurple,
-                      spacing: 10,
-                      type: WormType.normal),
-                  controller: _pageController,
-                  count: 3,
-                  onDotClicked: (index) {
-                    if (index > _pageIndex) {
-                      _pageController.nextPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeIn);
-                    } else {
-                      _pageController.previousPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeIn);
-                    }
-                  },
+                PageDetail(
+                  sHeight: sHeight,
+                  sWidth: sWidth,
+                  image: "assets/images/Server.png",
+                  text:
+                      "page2 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
                 ),
-                Visibility(
-                  visible: _pageIndex < 2 ? true : false,
-                  child: InkWell(
-                    onTap: () {
-                      _pageController.nextPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeIn);
-                    },
-                    child: const SizedBox(
-                      width: 55,
-                      child: Text("next"),
-                    ),
-                  ),
-                )
+                PageDetail(
+                  sHeight: sHeight,
+                  sWidth: sWidth,
+                  image: "assets/images/Coins-amico.png",
+                  text: "page1 /nLorem ipsum dolor sit amet, consectetur",
+                  button: button(context, sWidth),
+                ),
               ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Container(
+                alignment: const Alignment(0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Visibility(
+                      visible: _pageIndex > 0 ? true : false,
+                      child: InkWell(
+                        onTap: () {
+                          _pageController.previousPage(
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn);
+                        },
+                        child: const SizedBox(
+                          width: 55,
+                          child: Text("prev"),
+                        ),
+                      ),
+                    ),
+                    SmoothPageIndicator(
+                      effect: const WormEffect(
+                          activeDotColor: Colors.deepPurple,
+                          spacing: 10,
+                          type: WormType.normal),
+                      controller: _pageController,
+                      count: 3,
+                      onDotClicked: (index) {
+                        if (index > _pageIndex) {
+                          _pageController.nextPage(
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn);
+                        } else {
+                          _pageController.previousPage(
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn);
+                        }
+                      },
+                    ),
+                    Visibility(
+                      visible: _pageIndex < 2 ? true : false,
+                      child: InkWell(
+                        onTap: () {
+                          _pageController.nextPage(
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn);
+                        },
+                        child: const SizedBox(
+                          width: 55,
+                          child: Text("next"),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ],

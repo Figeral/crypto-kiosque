@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
 
 class BuyTransaction extends StatefulWidget {
@@ -16,6 +17,7 @@ class BuyTransaction extends StatefulWidget {
 }
 
 class _BuyTransactionState extends State<BuyTransaction> {
+  String? _scanBarcode;
   static final vm = CryptoViewModel();
   final listener = vm.stream.listen((event) {});
   String? _selectedOption = 'MTN Mobile Money';
@@ -41,6 +43,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
     _controller.forEach((element) => element.dispose());
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -90,12 +93,13 @@ class _BuyTransactionState extends State<BuyTransaction> {
                             child: TextField(
                               controller: _controller[0],
                               enabled: false,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
-                                hintText: 'Scan client wallet qr code',
+                                hintText: _scanBarcode??
+                                    'Scan client wallet qr code',
                               ),
                             ),
                           ),
@@ -103,7 +107,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                             width: 5,
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: scanQR,
                               icon: const Icon(Icons.qr_code_scanner_sharp))
                         ],
                       ),
@@ -121,27 +125,22 @@ class _BuyTransactionState extends State<BuyTransaction> {
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             hintText: 'Mobile Money number',
                             suffix: Text("${_textCounter}/9")),
                       ),
-                      const Text('First Name'),
-                      const SizedBox(height: 8.0),
-                      TextField(
-                        controller: _controller[2],
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                          hintText: 'Enter your first name',
-                        ),
-                      ),
                       const SizedBox(height: 16.0),
                       const Text('Mobile Money'),
-                      dropDownButton(screenSize),
-                      chooseCrypto(context),
-                      const SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          dropDownButton(screenSize),
+                          chooseCrypto(context),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      purchaseButton(context),
                     ],
                   )),
                 ),
@@ -153,9 +152,55 @@ class _BuyTransactionState extends State<BuyTransaction> {
     );
   }
 
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+
+  ElevatedButton purchaseButton(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        fixedSize: MaterialStateProperty.all(
+            Size(MediaQuery.of(context).size.width * 0.87, 60)),
+        backgroundColor: MaterialStateProperty.all(AppColors.lightPurple),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {}
+      },
+      child: Text(
+        'Buy',
+        style: TextStyle(
+            color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+            fontWeight: FontWeight.bold,
+            fontSize: 20),
+      ),
+    );
+  }
+
   SizedBox dropDownButton(Size screenSize) {
     return SizedBox(
-      width: screenSize.width * 0.5,
+      width: screenSize.width * 0.47,
       child: DropdownButtonFormField<String>(
         value: _selectedOption,
         elevation: 10,
@@ -172,7 +217,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
         }).toList(),
         decoration: const InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
       ),
@@ -181,6 +226,17 @@ class _BuyTransactionState extends State<BuyTransaction> {
 
   ElevatedButton chooseCrypto(BuildContext context) {
     return ElevatedButton(
+      style: ButtonStyle(
+          fixedSize: MaterialStateProperty.all(
+              Size(MediaQuery.of(context).size.width * 0.35, 65)),
+          backgroundColor: MaterialStateProperty.all(
+              Theme.of(context).scaffoldBackgroundColor),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          side: MaterialStateProperty.all(const BorderSide(width: 0.6))),
       onPressed: () async {
         await vm.addStream();
         listener.onData((data) async {
@@ -190,7 +246,13 @@ class _BuyTransactionState extends State<BuyTransaction> {
           );
         });
       },
-      child: const Text("Choose Crypto "),
+      child: const Text(
+        "Choose Crypto ",
+        style: TextStyle(
+          // color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 

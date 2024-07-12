@@ -1,4 +1,5 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/constants/app_colors.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -71,6 +72,11 @@ class _SigninPageState extends State<SigninPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(9),
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             decoration: const InputDecoration(
                               prefixIcon: CountryCodePicker(
                                 dialogSize: Size(500, 450),
