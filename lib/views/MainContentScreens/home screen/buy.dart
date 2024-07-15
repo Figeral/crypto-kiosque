@@ -59,26 +59,26 @@ class _BuyTransactionState extends State<BuyTransaction> {
           indent: 20,
           endIndent: 20,
         ),
-        SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: screenSize.width * 0.68,
-                  child: Text(
-                    "Agent must have client's cash before  handling any purchase Transaction",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                        color: Colors.grey.shade500),
-                  ),
+        Center(
+          child: Column(
+            children: [
+              SizedBox(
+                width: screenSize.width * 0.68,
+                child: Text(
+                  "Agent must have client's cash before  handling any purchase Transaction",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      color: Colors.grey.shade500),
                 ),
-                // Sample content screen
-                const SizedBox(
-                  height: 100,
-                ),
-                SizedBox(
+              ),
+              // Sample content screen
+              const SizedBox(
+                height: 100,
+              ),
+              SingleChildScrollView(
+                child: SizedBox(
                   width: screenSize.width * 0.85,
                   child: Form(
                       child: Column(
@@ -98,7 +98,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
-                                hintText: _scanBarcode??
+                                hintText: _scanBarcode ??
                                     'Scan client wallet qr code',
                               ),
                             ),
@@ -144,8 +144,8 @@ class _BuyTransactionState extends State<BuyTransaction> {
                     ],
                   )),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         )
       ],

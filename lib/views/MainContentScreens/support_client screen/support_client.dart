@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -10,8 +11,19 @@ class SupportPage extends StatefulWidget {
 class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Support client"),
+    final screenSize = MediaQuery.of(context).size;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: SizedBox(
+            //color: Colors.blueAccent.shade400,
+            width: screenSize.width * 0.8,
+            height: screenSize.height * 0.4,
+            child: Text("Support client"),
+          ),
+        ),
+      ],
     );
   }
 }

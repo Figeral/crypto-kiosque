@@ -1,3 +1,4 @@
+import 'package:otp/otp.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    final code = OTP.generateTOTPCodeString(
+        'JBSWY3DPEHPK3PXP', debugImageOverheadAllowance,
+        length: 4, algorithm: Algorithm.SHA1, isGoogle: false);
+    print(code);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;

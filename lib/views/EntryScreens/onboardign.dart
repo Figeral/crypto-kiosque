@@ -35,7 +35,7 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
       body: Column(
         children: [
           Expanded(
-            flex: 7,
+            flex: 9,
             child: PageView(
               onPageChanged: (value) => setState(() {
                 _pageIndex = value;
@@ -70,6 +70,7 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
             flex: 1,
             child: Center(
               child: Container(
+                color: Colors.black,
                 alignment: const Alignment(0, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -168,12 +169,10 @@ Widget PageDetail(
   return Padding(
     padding: EdgeInsets.fromLTRB(0, sWidth * 0, 0, sWidth * 0.3),
     child: Container(
-      //color: Colors.grey,
-      width: sWidth,
-      height: sHeight * 0.50,
+      color: Colors.black,
       child: Center(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(0, sWidth * 0.3, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, sWidth * 0.2, 0, 0),
           child: Column(
             children: [
               Image(
@@ -183,19 +182,25 @@ Widget PageDetail(
               SizedBox(
                 height: sHeight * 0.08,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
-                  textAlign: TextAlign.center,
+              SizedBox(
+                height: sHeight * 0.08,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               SizedBox(
                 height: sHeight * 0.05,
               ),
-              button ?? const SizedBox()
+              button ??
+                  Container(
+                    color: Colors.orange,
+                  ),
             ],
           ),
         ),

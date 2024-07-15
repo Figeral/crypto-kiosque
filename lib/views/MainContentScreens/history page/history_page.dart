@@ -42,7 +42,7 @@ class _HistoryPageState extends State<HistoryPage>
                 ),
               )),
           Expanded(
-              flex: 6,
+              flex: 7,
               child: SizedBox(
                 width: screenSize.width * 0.9,
                 child: Column(

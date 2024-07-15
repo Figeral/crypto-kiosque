@@ -18,6 +18,7 @@ class CryptoViewModel {
   factory CryptoViewModel() {
     return _instance;
   }
+
   final _endpoint = CryptoEndPoint();
   Future<List<dynamic>> fetchCrypto() async {
     final response = await http.get(
