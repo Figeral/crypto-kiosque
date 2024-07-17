@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/models/app_modal/destion_icons.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/home.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/profilePage/profile.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/setting.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/history_page.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
@@ -51,10 +53,16 @@ class _MainContentState extends State<MainContent> {
               onPressed: () {},
             ),
             actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 20),
-                child: const CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/user.png"),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: ((context) => const ProfilePage())));
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: const CircleAvatar(
+                    backgroundImage: AssetImage("assets/images/user.png"),
+                  ),
                 ),
               )
             ],

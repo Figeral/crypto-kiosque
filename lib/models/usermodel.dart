@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class UserModel {
-  String id;
+  String? id;
   String username;
   String email;
   String? profile;
@@ -9,14 +9,14 @@ class UserModel {
   //DateTime created;
 //DateTime updated;
   UserModel(
-      {required this.id,
+      {this.id,
       required this.username,
       required this.email,
       required this.tel,
       this.profile});
   factory UserModel.userGenerator(Map<String, dynamic> data) {
     return UserModel(
-      id: data["id"],
+      //id: data["id"],
       username: data['username'],
       email: data["email"],
       tel: data['telephone'],

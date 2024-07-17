@@ -46,10 +46,17 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(Server().server.authStore.model),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Row(
+                          children: [
+                            Text(
+                              _user.username,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

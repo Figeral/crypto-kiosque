@@ -284,10 +284,9 @@ class _SigninPageState extends State<SigninPage> {
           context: context,
           message: "Credential confirmation Pending",
           type: "pending");
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: ((context) => const Login())));
-      });
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: ((context) => const Login())));
     } catch (e) {
       print(e.toString());
       ErrorModal.showErrorDialog(
