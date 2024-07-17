@@ -1,8 +1,15 @@
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:crypto_kiosque/utils/snackbars.dart';
+import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
+import 'package:crypto_kiosque/utils/errors_messages.dart';
+import 'package:crypto_kiosque/Configs/backend_server.dart';
+import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/signin.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/recovery.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/confirmation.dart';
@@ -15,7 +22,19 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _controllers = [
+    TextEditingController(),
+    TextEditingController(),
+  ];
   bool isObscure = false;
+  @override
+  void dispose() {
+    _controllers.forEach((element) {
+      element.dispose();
+    });
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -60,6 +79,7 @@ class _LoginState extends State<Login> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            controller: _controllers[0],
                             decoration: const InputDecoration(
                               hintText: "Email Address",
                               border: OutlineInputBorder(
@@ -72,6 +92,7 @@ class _LoginState extends State<Login> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            controller: _controllers[1],
                             obscureText: isObscure,
                             decoration: InputDecoration(
                               hintText: "Password",
@@ -122,24 +143,12 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    content: const Text(
-                                        "A confirmation code was send to your address"),
-                                    action: SnackBarAction(
-                                      label: "undo",
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                );
-                                Future.delayed(Duration(seconds: 3), () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const ConfirmationPage())));
-                                });
+                                await logInUser(
+                                    context: context,
+                                    email: _controllers[0].text,
+                                    pw: _controllers[1].text);
                               }
                             },
                             child: Text(
@@ -158,7 +167,6 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(sWidth * 0.20, 0, 0, 0),
                   child: GestureDetector(
-                      //style: ButtonStyle(),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const SigninPage()));
@@ -183,5 +191,47 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<void> logInUser(
+      {required BuildContext context,
+      required String email,
+      required String pw,
+      String? link}) async {
+    Server().server.authStore.clear();
+    UserModel? model;
+    late Map<String, dynamic> data;
+    try {
+      final user = User().instance;
+
+      await user.authWithPassword(email, pw).then((value) {
+        // setState(() {
+        //   data = value.record!.data;
+
+        //   model = UserModel.userGenerator(data);
+        //   model.toString();
+        // });
+      });
+
+      SnackBarMessenger().stateSnackMessenger(
+          context: context,
+          message: "A confirmation code was send to your address",
+          type: "pending");
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: ((context) => const ConfirmationPage())));
+      });
+
+      // RecordModel test = Server().server.authStore.model;
+
+      // print("user email is ${test.data['username']}");
+    } on ClientException catch (e) {
+      ErrorModal.showErrorDialog(context,
+          "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
+    } catch (e) {
+      print(e.toString());
+      ErrorModal.showErrorDialog(
+          context, e.toString().split("message:")[1].split(",")[0]);
+    }
   }
 }

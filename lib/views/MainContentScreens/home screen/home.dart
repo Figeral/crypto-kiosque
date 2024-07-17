@@ -3,7 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
+import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,16 +19,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    final code = OTP.generateTOTPCodeString(
-        'JBSWY3DPEHPK3PXP', debugImageOverheadAllowance,
-        length: 4, algorithm: Algorithm.SHA1, isGoogle: false);
-    print(code);
     super.initState();
   }
+
+  RecordModel _model = Server().server.authStore.model;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final _user = UserModel.userGenerator(_model.data);
 
     return Scaffold(
       floatingActionButton: TransactionActionButton(context: context),
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Row(
                         children: [
-                          Text("New day"),
+                          Text(Server().server.authStore.model),
                         ],
                       ),
                     ],

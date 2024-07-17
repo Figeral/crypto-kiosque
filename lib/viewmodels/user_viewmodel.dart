@@ -5,4 +5,7 @@ import 'package:crypto_kiosque/Configs/backend_server.dart';
 class User {
   final _user = Server().server;
   RecordService get instance => _user.collection("users");
+  User._();
+  static final _instance = User._();
+  factory User() => _instance;
 }

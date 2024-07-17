@@ -77,7 +77,7 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
                     },
                     child: const SizedBox(
                       width: 55,
-                      child: Text("previous"),
+                      child: Text("prev"),
                     ),
                   ),
                 ),

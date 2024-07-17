@@ -11,9 +11,8 @@ class SnackBarMessenger {
       required String type}) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: type == ActionType.success.toString()
-            ? Colors.greenAccent.shade200
-            : AppColors.deepPurple,
+        backgroundColor:
+            type == "error" ? Colors.redAccent.shade200 : AppColors.deepPurple,
         behavior: SnackBarBehavior.floating,
         content: Text(message),
         action: SnackBarAction(
@@ -25,4 +24,4 @@ class SnackBarMessenger {
   }
 }
 
-enum ActionType { success, pending }
+// enum ActionType { success, pending, error }

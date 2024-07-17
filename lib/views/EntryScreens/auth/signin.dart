@@ -1,6 +1,8 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:twilio_flutter/twilio_flutter.dart';
+import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:crypto_kiosque/utils/snackbars.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
@@ -18,6 +20,7 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
+  String _code = "+237";
   int _textCounter = 0;
   bool isObscure = true;
   final _controllers = [
@@ -110,7 +113,12 @@ class _SigninPageState extends State<SigninPage> {
                             ],
                             decoration: InputDecoration(
                               suffix: Text("$_textCounter/9"),
-                              prefixIcon: const CountryCodePicker(
+                              prefixIcon: CountryCodePicker(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _code = value.toString();
+                                  });
+                                },
                                 dialogSize: Size(500, 450),
                                 hideMainText: true,
                                 showFlagMain: true,
@@ -208,15 +216,9 @@ class _SigninPageState extends State<SigninPage> {
                                   context: context,
                                   userName: '',
                                   email: _controllers[0].text,
-                                  tel: int.parse(_controllers[1].text),
+                                  tel: int.parse(_code + _controllers[1].text),
                                   pw: _controllers[3].text,
                                 );
-
-                                // Future.delayed(Duration(seconds: 3), () {
-                                //   Navigator.of(context).push(MaterialPageRoute(
-                                //       builder: ((context) =>
-                                //           const ConfirmationPage())));
-                                // });
                               }
                             },
                             child: Text(
@@ -282,9 +284,14 @@ class _SigninPageState extends State<SigninPage> {
           context: context,
           message: "Credential confirmation Pending",
           type: "pending");
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: ((context) => const Login())));
+      });
     } catch (e) {
       print(e.toString());
-      ErrorModal.showErrorDialog(context, e.toString().split("message:")[1]);
+      ErrorModal.showErrorDialog(
+          context, e.toString().split("message:")[1].split(",")[0]);
     }
   }
 }
