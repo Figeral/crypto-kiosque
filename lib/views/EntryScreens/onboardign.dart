@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
 
@@ -32,99 +31,90 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            flex: 9,
-            child: PageView(
-              onPageChanged: (value) => setState(() {
-                _pageIndex = value;
-              }),
-              controller: _pageController,
-              children: [
-                PageDetail(
-                  sHeight: sHeight,
-                  sWidth: sWidth,
-                  image: "assets/images/BitcoinP2P.png",
-                  text:
-                      "page1 /nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
-                ),
-                PageDetail(
-                  sHeight: sHeight,
-                  sWidth: sWidth,
-                  image: "assets/images/Server.png",
-                  text:
-                      "page2 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
-                ),
-                PageDetail(
-                  sHeight: sHeight,
-                  sWidth: sWidth,
-                  image: "assets/images/Coins-amico.png",
-                  text: "page1 /nLorem ipsum dolor sit amet, consectetur",
-                  button: button(context, sWidth),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Container(
-                color: Colors.black,
-                alignment: const Alignment(0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Visibility(
-                      visible: _pageIndex > 0 ? true : false,
-                      child: InkWell(
-                        onTap: () {
-                          _pageController.previousPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn);
-                        },
-                        child: const SizedBox(
-                          width: 55,
-                          child: Text("prev"),
-                        ),
-                      ),
-                    ),
-                    SmoothPageIndicator(
-                      effect: const WormEffect(
-                          activeDotColor: Colors.deepPurple,
-                          spacing: 10,
-                          type: WormType.normal),
-                      controller: _pageController,
-                      count: 3,
-                      onDotClicked: (index) {
-                        if (index > _pageIndex) {
-                          _pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn);
-                        } else {
-                          _pageController.previousPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn);
-                        }
-                      },
-                    ),
-                    Visibility(
-                      visible: _pageIndex < 2 ? true : false,
-                      child: InkWell(
-                        onTap: () {
-                          _pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn);
-                        },
-                        child: const SizedBox(
-                          width: 55,
-                          child: Text("next"),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+          PageView(
+            onPageChanged: (value) => setState(() {
+              _pageIndex = value;
+            }),
+            controller: _pageController,
+            children: [
+              PageDetail(
+                sHeight: sHeight,
+                sWidth: sWidth,
+                image: "assets/images/BitcoinP2P.png",
+                text:
+                    "page1 /nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
               ),
+              PageDetail(
+                sHeight: sHeight,
+                sWidth: sWidth,
+                image: "assets/images/Server.png",
+                text:
+                    "page2 /n Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis magna vel magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum. Vivamus ac lacus sed magna efficitur dictum.",
+              ),
+              PageDetail(
+                sHeight: sHeight,
+                sWidth: sWidth,
+                image: "assets/images/Coins-amico.png",
+                text: "page1 /nLorem ipsum dolor sit amet, consectetur",
+                button: button(context, sWidth),
+              ),
+            ],
+          ),
+          Container(
+            alignment: const Alignment(0, 0.8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Visibility(
+                  visible: _pageIndex > 0 ? true : false,
+                  child: InkWell(
+                    onTap: () {
+                      _pageController.previousPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeIn);
+                    },
+                    child: const SizedBox(
+                      width: 55,
+                      child: Text("previous"),
+                    ),
+                  ),
+                ),
+                SmoothPageIndicator(
+                  effect: const WormEffect(
+                      activeDotColor: Colors.deepPurple,
+                      spacing: 10,
+                      type: WormType.normal),
+                  controller: _pageController,
+                  count: 3,
+                  onDotClicked: (index) {
+                    if (index > _pageIndex) {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeIn);
+                    } else {
+                      _pageController.previousPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeIn);
+                    }
+                  },
+                ),
+                Visibility(
+                  visible: _pageIndex < 2 ? true : false,
+                  child: InkWell(
+                    onTap: () {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeIn);
+                    },
+                    child: const SizedBox(
+                      width: 55,
+                      child: Text("next"),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ],
@@ -169,10 +159,12 @@ Widget PageDetail(
   return Padding(
     padding: EdgeInsets.fromLTRB(0, sWidth * 0, 0, sWidth * 0.3),
     child: Container(
-      color: Colors.black,
+      //color: Colors.grey,
+      width: sWidth,
+      height: sHeight * 0.50,
       child: Center(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(0, sWidth * 0.2, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, sWidth * 0.3, 0, 0),
           child: Column(
             children: [
               Image(
@@ -182,25 +174,19 @@ Widget PageDetail(
               SizedBox(
                 height: sHeight * 0.08,
               ),
-              SizedBox(
-                height: sHeight * 0.08,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
-                  child: Text(
-                    text,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.grey),
+                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
                 height: sHeight * 0.05,
               ),
-              button ??
-                  Container(
-                    color: Colors.orange,
-                  ),
+              button ?? const SizedBox()
             ],
           ),
         ),

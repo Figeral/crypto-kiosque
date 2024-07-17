@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
+import 'package:crypto_kiosque/utils/errors_messages.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
@@ -123,12 +124,12 @@ class _BuyTransactionState extends State<BuyTransaction> {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         decoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            hintText: 'Mobile Money number',
-                            suffix: Text("${_textCounter}/9")),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          hintText: 'Mobile Money number',
+                          suffix: Text("${_textCounter}/9"),
+                        ),
                       ),
                       const SizedBox(height: 16.0),
                       const Text('Mobile Money'),
@@ -238,13 +239,18 @@ class _BuyTransactionState extends State<BuyTransaction> {
           ),
           side: MaterialStateProperty.all(const BorderSide(width: 0.6))),
       onPressed: () async {
-        await vm.addStream();
-        listener.onData((data) async {
-          await showSearch(
-            context: context,
-            delegate: CryptoList(searchList: data),
-          );
-        });
+        try {
+          await vm.addStream();
+          listener.onData((data) async {
+            await showSearch(
+              context: context,
+              delegate: CryptoList(searchList: data),
+            );
+          });
+        } catch (e) {
+          ErrorModal.showErrorDialog(context,
+              "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
+        }
       },
       child: const Text(
         "Choose Crypto ",

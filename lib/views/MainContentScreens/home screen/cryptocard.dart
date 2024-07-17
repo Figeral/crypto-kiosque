@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
 
 class CryptoCard extends StatelessWidget {
   CryptoCard({

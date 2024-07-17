@@ -1,8 +1,11 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/snackbars.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
+import 'package:crypto_kiosque/utils/errors_messages.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/recovery.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/confirmation.dart';
@@ -15,7 +18,21 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  bool isObscure = false;
+  int _textCounter = 0;
+  bool isObscure = true;
+  final _controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
+
+  @override
+  void dispose() {
+    _controllers.forEach((e) => e.dispose());
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -60,6 +77,12 @@ class _SigninPageState extends State<SigninPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            validator: (value) {
+                              if (!(value!.contains("@"))) {
+                                return "The email format is incorrect";
+                              }
+                            },
+                            controller: _controllers[0],
                             decoration: const InputDecoration(
                               hintText: "Email Address",
                               border: OutlineInputBorder(
@@ -72,13 +95,22 @@ class _SigninPageState extends State<SigninPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            validator: (value) {
+                              if (value!.length < 9) {
+                                return "Phone number too short , atleast 9 digit needed";
+                              }
+                            },
+                            onChanged: (value) => setState(() =>
+                                _textCounter = _controllers[1].text.length),
+                            controller: _controllers[1],
                             keyboardType: TextInputType.phone,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(9),
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            decoration: const InputDecoration(
-                              prefixIcon: CountryCodePicker(
+                            decoration: InputDecoration(
+                              suffix: Text("$_textCounter/9"),
+                              prefixIcon: const CountryCodePicker(
                                 dialogSize: Size(500, 450),
                                 hideMainText: true,
                                 showFlagMain: true,
@@ -87,7 +119,7 @@ class _SigninPageState extends State<SigninPage> {
                                 showOnlyCountryWhenClosed: true,
                               ),
                               hintText: "Telephone",
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
                               ),
@@ -97,6 +129,13 @@ class _SigninPageState extends State<SigninPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            obscureText: isObscure,
+                            validator: (value) {
+                              if (value!.length <= 4) {
+                                return "Passord too short , atleast 5 characters needed";
+                              }
+                            },
+                            controller: _controllers[2],
                             decoration: InputDecoration(
                               suffix: GestureDetector(
                                 onTap: () {
@@ -119,6 +158,14 @@ class _SigninPageState extends State<SigninPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
                           child: TextFormField(
+                            obscureText: isObscure,
+                            validator: (value) {
+                              if (_controllers[2].text !=
+                                  _controllers[3].text) {
+                                return "input different from password";
+                              }
+                            },
+                            controller: _controllers[3],
                             decoration: InputDecoration(
                               suffix: GestureDetector(
                                 onTap: () {
@@ -155,23 +202,21 @@ class _SigninPageState extends State<SigninPage> {
                                 ),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text("processing data"),
-                                    action: SnackBarAction(
-                                      label: "undo",
-                                      onPressed: () {},
-                                    ),
-                                  ),
+                                await addUser(
+                                  context: context,
+                                  userName: '',
+                                  email: _controllers[0].text,
+                                  tel: int.parse(_controllers[1].text),
+                                  pw: _controllers[3].text,
                                 );
-                                Future.delayed(Duration(seconds: 3), () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const ConfirmationPage())));
-                                });
+
+                                // Future.delayed(Duration(seconds: 3), () {
+                                //   Navigator.of(context).push(MaterialPageRoute(
+                                //       builder: ((context) =>
+                                //           const ConfirmationPage())));
+                                // });
                               }
                             },
                             child: Text(
@@ -215,5 +260,31 @@ class _SigninPageState extends State<SigninPage> {
         ),
       ),
     );
+  }
+
+  Future<void> addUser(
+      {required BuildContext context,
+      required String userName,
+      required String email,
+      required int tel,
+      required String pw,
+      String? link}) async {
+    try {
+      final user = User().instance;
+      await user.create(body: {
+        "usernames": userName,
+        "email": email,
+        "telephone": tel,
+        'password': pw,
+        'passwordConfirm': pw
+      });
+      SnackBarMessenger().stateSnackMessenger(
+          context: context,
+          message: "Credential confirmation Pending",
+          type: "pending");
+    } catch (e) {
+      print(e.toString());
+      ErrorModal.showErrorDialog(context, e.toString().split("message:")[1]);
+    }
   }
 }

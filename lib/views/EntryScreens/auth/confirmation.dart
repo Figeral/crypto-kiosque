@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/signin.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/Maincontent.dart';
 

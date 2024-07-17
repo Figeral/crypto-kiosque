@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/soldTransaction.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/allTranscations.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/boughtTransaction.dart';

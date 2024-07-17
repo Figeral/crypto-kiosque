@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/constants/app_colors.dart';
+import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/models/app_modal/destion_icons.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/home.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/setting.dart';
