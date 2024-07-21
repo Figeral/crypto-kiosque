@@ -22,12 +22,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  RecordModel _model = Server().server.authStore.model;
+  RecordModel? _model = Server().server.authStore.model;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final _user = UserModel.userGenerator(_model.data);
+    final _user = UserModel.userGenerator(_model!.data);
 
     return Scaffold(
       floatingActionButton: TransactionActionButton(context: context),

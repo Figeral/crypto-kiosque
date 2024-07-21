@@ -35,7 +35,7 @@ class _MainContentState extends State<MainContent> {
     HomePage(),
     HistoryPage(),
     SupportPage(),
-    SettingPage()
+    SettingsScreen()
   ];
   int _currentIndex = 0;
   @override
@@ -44,29 +44,11 @@ class _MainContentState extends State<MainContent> {
       // maintainBottomViewPadding: true,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: _currentIndex == 0
-                ? AppColors.deepPurple
-                : Theme.of(context).scaffoldBackgroundColor,
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {},
-            ),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: ((context) => const ProfilePage())));
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/user.png"),
-                  ),
+          appBar: _currentIndex != 3
+              ? appBar(context)
+              : AppBar(
+                  automaticallyImplyLeading: false,
                 ),
-              )
-            ],
-          ),
           body: SafeArea(child: body[_currentIndex]),
           bottomNavigationBar: SafeArea(
             child: NavigationBar(
@@ -80,6 +62,32 @@ class _MainContentState extends State<MainContent> {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: _currentIndex == 0
+          ? AppColors.deepPurple
+          : Theme.of(context).scaffoldBackgroundColor,
+      leading: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {},
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: ((context) => const ProfilePage())));
+          },
+          child: Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: const CircleAvatar(
+              backgroundImage: AssetImage("assets/images/user.png"),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

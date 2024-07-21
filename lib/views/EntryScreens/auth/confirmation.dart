@@ -35,6 +35,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       _otp = otpGenerator();
     });
     mailer(_otp);
+    print(_otp);
     super.initState();
   }
 
