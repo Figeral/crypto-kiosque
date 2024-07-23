@@ -36,11 +36,11 @@ class TransactionActionButton extends StatelessWidget {
       opacity: 0.8,
       child: ElevatedButton(
         style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(AppColors.deepPurple),
-          elevation: MaterialStateProperty.all(5),
-          shape: MaterialStateProperty.all(
+          overlayColor: WidgetStateProperty.all(AppColors.deepPurple),
+          elevation: WidgetStateProperty.all(5),
+          shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-          fixedSize: MaterialStateProperty.all(
+          fixedSize: WidgetStateProperty.all(
               Size(size * screenConstraints[0], size * screenConstraints[1])),
         ),
         onPressed: () {

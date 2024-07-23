@@ -50,12 +50,12 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
   void mailer(String otp) async {
     final TwilioFlutter twilioClient = TwilioFlutter(
         accountSid: 'ACd3e546dd94ebb9ee03bfcf8f05744280',
-        authToken: '2cea694c3c11f013f0039736c18ffddc',
+        authToken: 'afd719b1ebe937c0e203e39f9e90ce1c',
         twilioNumber: '+18102158548');
     try {
       final res = await twilioClient.sendSMS(
           toNumber: '+237690462556',
-          //toNumber: _userModel.data["telephone"].toString(),
+          // toNumber: "+" + _userModel.data["telephone"].toString(),
           messageBody: "your code : $otp");
       print(res);
     } on TwilioFlutterException catch (e) {
@@ -253,11 +253,11 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                               padding: const EdgeInsets.fromLTRB(0, 10, 10, 50),
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  fixedSize: MaterialStateProperty.all(
+                                  fixedSize: WidgetStateProperty.all(
                                       Size(screenSize.width * 0.38, 60)),
                                   backgroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  shape: MaterialStateProperty.all(
+                                      WidgetStateProperty.all(Colors.white),
+                                  shape: WidgetStateProperty.all(
                                     RoundedRectangleBorder(
                                       side: const BorderSide(
                                           color: AppColors.lightPurple,
@@ -267,6 +267,9 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                                   ),
                                 ),
                                 onPressed: () {
+                                  setState(() {
+                                    _otp = otpGenerator();
+                                  });
                                   mailer(_otp);
                                   SnackBarMessenger().stateSnackMessenger(
                                       context: context,
@@ -287,11 +290,11 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                               padding: const EdgeInsets.fromLTRB(10, 10, 0, 50),
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  fixedSize: MaterialStateProperty.all(
+                                  fixedSize: WidgetStateProperty.all(
                                       Size(screenSize.width * 0.38, 60)),
-                                  backgroundColor: MaterialStateProperty.all(
+                                  backgroundColor: WidgetStateProperty.all(
                                       AppColors.lightPurple),
-                                  shape: MaterialStateProperty.all(
+                                  shape: WidgetStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -357,10 +360,9 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
   }
 
   String otpGenerator() => OTP.generateTOTPCodeString(
-      interval: 1,
-      'JBSWY3DPEHPK3PXP',
-      debugImageOverheadAllowance,
       length: 4,
-      algorithm: Algorithm.SHA1,
-      isGoogle: false);
+      'JBSWY3DPEHPK3PXP',
+      DateTime.now().millisecondsSinceEpoch,
+      interval: 1,
+      algorithm: Algorithm.SHA512);
 }

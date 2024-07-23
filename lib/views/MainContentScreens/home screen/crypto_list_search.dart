@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/models/crypto_model.dart';
+import 'package:crypto_kiosque/viewmodels/crypto_selecor.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/cryptocard.dart';
 
@@ -48,6 +49,7 @@ class CryptoList extends SearchDelegate<CryptoModel> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final cryptoSelector = CryptoSelectorStream();
     final List<dynamic> suggestionList = query.isEmpty
         ? searchList
         : searchList
@@ -67,7 +69,8 @@ class CryptoList extends SearchDelegate<CryptoModel> {
               percentageChange24h: suggestionList[index][6],
               marketCap: suggestionList[index][7]),
           onTap: () {
-            // query = suggestionList[index];
+            cryptoSelector.addStream(suggestionList[index][1]);
+            Navigator.of(context).pop();
           },
         );
       },

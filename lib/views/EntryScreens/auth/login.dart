@@ -133,11 +133,11 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 50),
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(
+                              fixedSize: WidgetStateProperty.all(
                                   Size(sWidth * 0.87, 60)),
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                   AppColors.lightPurple),
-                              shape: MaterialStateProperty.all(
+                              shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

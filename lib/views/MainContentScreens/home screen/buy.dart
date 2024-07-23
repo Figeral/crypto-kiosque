@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
+import 'package:crypto_kiosque/viewmodels/crypto_selecor.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
@@ -31,7 +32,6 @@ class _BuyTransactionState extends State<BuyTransaction> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
-    TextEditingController()
   ];
   @override
   void initState() {
@@ -49,107 +49,138 @@ class _BuyTransactionState extends State<BuyTransaction> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 15),
-          child: appBar(context),
-        ),
-        const Divider(
-          height: 10,
-          indent: 20,
-          endIndent: 20,
-        ),
-        Center(
-          child: Column(
-            children: [
-              SizedBox(
-                width: screenSize.width * 0.68,
-                child: Text(
-                  "Agent must have client's cash before  handling any purchase Transaction",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      color: Colors.grey.shade500),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 15),
+            child: appBar(context),
+          ),
+          const Divider(
+            height: 10,
+            indent: 20,
+            endIndent: 20,
+          ),
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: screenSize.width * 0.68,
+                  child: Text(
+                    "Agent must have client's cash before  handling any purchase Transaction",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        color: Colors.grey.shade500),
+                  ),
                 ),
-              ),
-              // Sample content screen
-              const SizedBox(
-                height: 100,
-              ),
-              SingleChildScrollView(
-                child: SizedBox(
-                  width: screenSize.width * 0.85,
-                  child: Form(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Wallet Address'),
-                      const SizedBox(height: 8.0),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: screenSize.width * 0.7,
-                            child: TextField(
-                              controller: _controller[0],
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                // Sample content screen
+                SizedBox(
+                  height: screenSize.height * 0.05,
+                ),
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width: screenSize.width * 0.85,
+                    child: Form(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 12.0),
+                        const Text('Wallet Address'),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: screenSize.width * 0.7,
+                              child: TextField(
+                                controller: _controller[0],
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  hintText: _scanBarcode ??
+                                      'Scan client wallet qr code',
                                 ),
-                                hintText: _scanBarcode ??
-                                    'Scan client wallet qr code',
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          IconButton(
-                              onPressed: scanQR,
-                              icon: const Icon(Icons.qr_code_scanner_sharp))
-                        ],
-                      ),
-                      const Text('Phone Number'),
-                      const SizedBox(height: 8.0),
-                      TextField(
-                        onChanged: (value) => setState(() =>
-                            _textCounter = _controller[1].value.text.length),
-                        controller: _controller[1],
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(9),
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          hintText: 'Mobile Money number',
-                          suffix: Text("${_textCounter}/9"),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(
+                                onPressed: scanQR,
+                                icon: const Icon(Icons.qr_code_scanner_sharp))
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      const Text('Mobile Money'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          dropDownButton(screenSize),
-                          chooseCrypto(context),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      purchaseButton(context),
-                    ],
-                  )),
+                        const SizedBox(height: 12.0),
+                        const Text('Phone Number'),
+                        TextField(
+                          onChanged: (value) => setState(() =>
+                              _textCounter = _controller[1].value.text.length),
+                          controller: _controller[1],
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(9),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            hintText: 'Mobile Money number',
+                            suffix: Text("${_textCounter}/9"),
+                          ),
+                        ),
+                        const SizedBox(height: 12.0),
+                        const Text('Amount'),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: screenSize.width * 0.48,
+                              child: TextField(
+                                controller: _controller[2],
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(9),
+                                  //\ FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    hintText: 'crypto amount',
+                                    suffix: Text("\$")),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            chooseCrypto(context),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        const Text('Mobile Money'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            dropDownButton(screenSize),
+                          ],
+                        ),
+                        const SizedBox(height: 30.0),
+                        purchaseButton(context),
+                      ],
+                    )),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -177,10 +208,10 @@ class _BuyTransactionState extends State<BuyTransaction> {
   ElevatedButton purchaseButton(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(
+        fixedSize: WidgetStateProperty.all(
             Size(MediaQuery.of(context).size.width * 0.87, 60)),
-        backgroundColor: MaterialStateProperty.all(AppColors.lightPurple),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(AppColors.lightPurple),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -228,16 +259,16 @@ class _BuyTransactionState extends State<BuyTransaction> {
   ElevatedButton chooseCrypto(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-          fixedSize: MaterialStateProperty.all(
-              Size(MediaQuery.of(context).size.width * 0.35, 65)),
-          backgroundColor: MaterialStateProperty.all(
+          fixedSize: WidgetStateProperty.all(
+              Size(MediaQuery.of(context).size.width * 0.35, 60)),
+          backgroundColor: WidgetStateProperty.all(
               Theme.of(context).scaffoldBackgroundColor),
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          side: MaterialStateProperty.all(const BorderSide(width: 0.6))),
+          side: WidgetStateProperty.all(const BorderSide(width: 0.6))),
       onPressed: () async {
         try {
           await vm.addStream();
@@ -252,13 +283,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
               "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
         }
       },
-      child: const Text(
-        "Choose Crypto ",
-        style: TextStyle(
-          // color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      child: CryptoName(),
     );
   }
 
@@ -285,5 +310,37 @@ class _BuyTransactionState extends State<BuyTransaction> {
             ))
       ],
     );
+  }
+}
+
+class CryptoName extends StatelessWidget {
+  String crypto = "";
+  final cryptoSelector = CryptoSelectorStream();
+  CryptoName({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<String>(
+        stream: cryptoSelector.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            crypto = snapshot.data.toString();
+            print(crypto);
+            return Text(
+              snapshot.data.toString(),
+              style: TextStyle(
+                // color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          }
+          return const Text(
+            "Choose Crypto ",
+            style: TextStyle(
+              // color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+        });
   }
 }
