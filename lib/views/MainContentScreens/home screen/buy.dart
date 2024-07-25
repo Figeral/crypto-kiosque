@@ -83,97 +83,119 @@ class _BuyTransactionState extends State<BuyTransaction> {
                   child: SizedBox(
                     width: screenSize.width * 0.85,
                     child: Form(
+                        key: _formKey,
                         child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 12.0),
-                        const Text('Wallet Address'),
-                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: screenSize.width * 0.7,
-                              child: TextField(
-                                controller: _controller[0],
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  hintText: _scanBarcode ??
-                                      'Scan client wallet qr code',
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            IconButton(
-                                onPressed: scanQR,
-                                icon: const Icon(Icons.qr_code_scanner_sharp))
-                          ],
-                        ),
-                        const SizedBox(height: 12.0),
-                        const Text('Phone Number'),
-                        TextField(
-                          onChanged: (value) => setState(() =>
-                              _textCounter = _controller[1].value.text.length),
-                          controller: _controller[1],
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(9),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            hintText: 'Mobile Money number',
-                            suffix: Text("${_textCounter}/9"),
-                          ),
-                        ),
-                        const SizedBox(height: 12.0),
-                        const Text('Amount'),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: screenSize.width * 0.48,
-                              child: TextField(
-                                controller: _controller[2],
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(9),
-                                  //\ FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: const InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                            const SizedBox(height: 12.0),
+                            const Text('Wallet Address'),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: screenSize.width * 0.7,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (_scanBarcode!.length > 0) {
+                                        return "must input wallet address";
+                                      }
+                                      return "";
+                                    },
+                                    controller: _controller[0],
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      hintText: _scanBarcode ??
+                                          'Scan client wallet qr code',
                                     ),
-                                    hintText: 'crypto amount',
-                                    suffix: Text("\$")),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                IconButton(
+                                    onPressed: scanQR,
+                                    icon:
+                                        const Icon(Icons.qr_code_scanner_sharp))
+                              ],
+                            ),
+                            const SizedBox(height: 12.0),
+                            const Text('Phone Number'),
+                            TextFormField(
+                              validator: (value) {
+                                if (_controller[1].text.isEmpty) {
+                                  return "must input a phone number";
+                                }
+                                return "";
+                              },
+                              onChanged: (value) => setState(() =>
+                                  _textCounter =
+                                      _controller[1].value.text.length),
+                              controller: _controller[1],
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(9),
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                hintText: 'Mobile Money number',
+                                suffix: Text("${_textCounter}/9"),
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
+                            const SizedBox(height: 12.0),
+                            const Text('Amount'),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: screenSize.width * 0.48,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (_controller[2].text.isEmpty) {
+                                        return "must enter volume of coins";
+                                      }
+                                      return "";
+                                    },
+                                    controller: _controller[2],
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: true),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(9),
+                                      //\ FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        hintText: 'crypto amount',
+                                        suffix: Text("\$")),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                chooseCrypto(context),
+                              ],
                             ),
-                            chooseCrypto(context),
+                            const SizedBox(height: 16.0),
+                            const Text('Mobile Money'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                dropDownButton(screenSize),
+                              ],
+                            ),
+                            const SizedBox(height: 30.0),
+                            purchaseButton(context),
                           ],
-                        ),
-                        const SizedBox(height: 16.0),
-                        const Text('Mobile Money'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            dropDownButton(screenSize),
-                          ],
-                        ),
-                        const SizedBox(height: 30.0),
-                        purchaseButton(context),
-                      ],
-                    )),
+                        )),
                   ),
                 ),
               ],
@@ -218,7 +240,18 @@ class _BuyTransactionState extends State<BuyTransaction> {
         ),
       ),
       onPressed: () {
-        if (_formKey.currentState!.validate()) {}
+        if (_formKey.currentState!.validate()) {
+          showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                    title: const Text("confirmation"),
+                    children: [
+                      TextField(
+                        autofocus: true,
+                      )
+                    ],
+                  ));
+        }
       },
       child: Text(
         'Buy',
@@ -234,6 +267,12 @@ class _BuyTransactionState extends State<BuyTransaction> {
     return SizedBox(
       width: screenSize.width * 0.47,
       child: DropdownButtonFormField<String>(
+        validator: (value) {
+          if (_selectedOption!.length > 2) {
+            return "choose a payment method";
+          }
+          return "";
+        },
         value: _selectedOption,
         elevation: 10,
         onChanged: (newValue) {
@@ -325,9 +364,9 @@ class CryptoName extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             crypto = snapshot.data.toString();
-            print(crypto);
+            //print(crypto);
             return Text(
-              snapshot.data.toString(),
+              snapshot.data.toString().split('+')[0],
               style: TextStyle(
                 // color: Colors.black,
                 fontWeight: FontWeight.bold,

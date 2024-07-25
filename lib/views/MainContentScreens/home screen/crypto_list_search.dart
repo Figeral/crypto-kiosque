@@ -69,7 +69,8 @@ class CryptoList extends SearchDelegate<CryptoModel> {
               percentageChange24h: suggestionList[index][6],
               marketCap: suggestionList[index][7]),
           onTap: () {
-            cryptoSelector.addStream(suggestionList[index][1]);
+            cryptoSelector.addStream(
+                suggestionList[index][1] + "+${suggestionList[index][4]}");
             Navigator.of(context).pop();
           },
         );
