@@ -1,13 +1,19 @@
 import 'dart:math' as math;
+import 'package:http/http.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pocketbase/pocketbase.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
+import 'package:crypto_kiosque/Configs/backend_server.dart';
+import 'package:crypto_kiosque/models/transaction_model.dart';
+import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_selecor.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_viewmodel.dart';
+import 'package:crypto_kiosque/viewmodels/TransactionViewModel.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/crypto_list_search.dart';
 
@@ -19,11 +25,15 @@ class BuyTransaction extends StatefulWidget {
 }
 
 class _BuyTransactionState extends State<BuyTransaction> {
+  final _userVm = UserViewmodel();
+
+  String cryptoInfo = "";
   String? _scanBarcode;
   static final vm = CryptoViewModel();
   final listener = vm.stream.listen((event) {});
-  String? _selectedOption = 'MTN Mobile Money';
+  String? _selectedOption = '';
   final List<String> _options = [
+    '',
     'MTN Mobile Money',
     'Orange Mobile Money',
   ];
@@ -95,10 +105,11 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                   width: screenSize.width * 0.7,
                                   child: TextFormField(
                                     validator: (value) {
-                                      if (_scanBarcode!.length > 0) {
+                                      if (_scanBarcode == null ||
+                                          _scanBarcode!.length < 1) {
                                         return "must input wallet address";
                                       }
-                                      return "";
+                                      return null;
                                     },
                                     controller: _controller[0],
                                     enabled: false,
@@ -128,7 +139,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                 if (_controller[1].text.isEmpty) {
                                   return "must input a phone number";
                                 }
-                                return "";
+                                return null;
                               },
                               onChanged: (value) => setState(() =>
                                   _textCounter =
@@ -159,7 +170,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                       if (_controller[2].text.isEmpty) {
                                         return "must enter volume of coins";
                                       }
-                                      return "";
+                                      return null;
                                     },
                                     controller: _controller[2],
                                     keyboardType:
@@ -185,7 +196,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                               ],
                             ),
                             const SizedBox(height: 16.0),
-                            const Text('Mobile Money'),
+                            const Text('Mobile payment'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -240,17 +251,12 @@ class _BuyTransactionState extends State<BuyTransaction> {
         ),
       ),
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          showDialog(
-              context: context,
-              builder: (context) => SimpleDialog(
-                    title: const Text("confirmation"),
-                    children: [
-                      TextField(
-                        autofocus: true,
-                      )
-                    ],
-                  ));
+        try {
+          if (_formKey.currentState!.validate()) {
+            purchaseDialog(context);
+          }
+        } catch (e) {
+          print(e.toString());
         }
       },
       child: Text(
@@ -263,15 +269,94 @@ class _BuyTransactionState extends State<BuyTransaction> {
     );
   }
 
+  Future<dynamic> purchaseDialog(BuildContext context) async {
+    final _transaction = TransactionModel(
+      wallet: _scanBarcode!,
+      phone: int.parse(_controller[1].text),
+      amount: double.parse(_controller[2].text),
+      crypto: cryptoInfo.split("+")[0],
+      payment: _selectedOption ?? "choose payement",
+      user: _userVm.currentUser,
+    );
+    final controller = TextEditingController();
+    final sendKey = GlobalKey<FormState>();
+    return await showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+              contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+              title: const Text("Confirmation"),
+              children: [
+                Text(
+                  "Purchase Operation ordered by ${_transaction.phone}  willing to recharge ${_transaction.amount}  ${_transaction.crypto} coins in his wallet ${_transaction.wallet} \n which is actually at ${double.parse(cryptoInfo.split("+")[1]).toStringAsFixed(3)} \$  Using ${_transaction.payment} method \n\n enter your code pin to confirm",
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Form(
+                  key: sendKey,
+                  child: TextFormField(
+                    autofocus: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "must enter a confirmation pin Code";
+                      } else if (value != _userVm.currentUser.pinCode) {
+                        return "input pin code is correct";
+                      }
+                      return null;
+                    },
+                    controller: controller,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      hintText: 'confirm transaction',
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Text("cancel")),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                          onPressed: () async {
+                            if (sendKey.currentState!.validate()) {
+                              try {
+                                await TransactionViewmodel().createTransaction(
+                                    json: _transaction.toJson());
+                                Navigator.of(context).pop();
+                              } catch (e) {
+                                // print(e.toString());
+                                ErrorModal.showErrorDialog(context,
+                                    "Error arose during transaction \n check your network or crypto currency ");
+                              }
+                            }
+                          },
+                          icon: const Text("ok")),
+                    )
+                  ],
+                )
+              ],
+            ));
+  }
+
   SizedBox dropDownButton(Size screenSize) {
     return SizedBox(
       width: screenSize.width * 0.47,
       child: DropdownButtonFormField<String>(
         validator: (value) {
-          if (_selectedOption!.length > 2) {
+          if (_selectedOption!.length < 2) {
             return "choose a payment method";
           }
-          return "";
+          return null;
         },
         value: _selectedOption,
         elevation: 10,
@@ -322,7 +407,11 @@ class _BuyTransactionState extends State<BuyTransaction> {
               "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
         }
       },
-      child: CryptoName(),
+      child: CryptoName(
+        changeName: (crypto) {
+          cryptoInfo = crypto;
+        },
+      ),
     );
   }
 
@@ -353,9 +442,9 @@ class _BuyTransactionState extends State<BuyTransaction> {
 }
 
 class CryptoName extends StatelessWidget {
-  String crypto = "";
   final cryptoSelector = CryptoSelectorStream();
-  CryptoName({super.key});
+  void Function(String crypto) changeName;
+  CryptoName({super.key, required this.changeName});
 
   @override
   Widget build(BuildContext context) {
@@ -363,8 +452,7 @@ class CryptoName extends StatelessWidget {
         stream: cryptoSelector.stream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            crypto = snapshot.data.toString();
-            //print(crypto);
+            changeName(snapshot.data.toString());
             return Text(
               snapshot.data.toString().split('+')[0],
               style: TextStyle(

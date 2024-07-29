@@ -6,6 +6,7 @@ class UserModel {
   String email;
   String? profile;
   int tel;
+  String pinCode;
   //DateTime created;
 //DateTime updated;
   UserModel(
@@ -13,16 +14,28 @@ class UserModel {
       required this.username,
       required this.email,
       required this.tel,
+      required this.pinCode,
       this.profile});
   factory UserModel.userGenerator(Map<String, dynamic> data) {
     return UserModel(
-      //id: data["id"],
-      username: data['username'],
-      email: data["email"],
-      tel: data['telephone'],
-      // profile: data['profile']
-    );
+        // id: data["id"],
+        username: data['username'],
+        email: data["email"],
+        tel: data['telephone'],
+        profile: data['profile'],
+        pinCode: data["pincode"]);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      //'id': id,
+      'username': username,
+      'email': email,
+      'profile': profile,
+      'tel': tel,
+    };
+  }
+
   @override
   String toString() => "${[id, username, email, tel, profile]}";
 }

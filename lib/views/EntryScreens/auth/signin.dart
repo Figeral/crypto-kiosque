@@ -272,7 +272,7 @@ class _SigninPageState extends State<SigninPage> {
       required String pw,
       String? link}) async {
     try {
-      final user = User().instance;
+      final user = UserViewmodel().instance;
       await user.create(body: {
         "usernames": userName,
         "email": email,

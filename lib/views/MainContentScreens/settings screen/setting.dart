@@ -46,8 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SizedBox(height: 16),
           _buildSettingsItem(Icons.person, 'Account'),
-          SizedBox(height: 12),
-          _buildSettingsItem(Icons.info, 'Personal Information'),
+
           SizedBox(height: 12),
           _buildSettingsItem(Icons.lock, "Password and Access"),
           SizedBox(height: 12),
@@ -58,6 +57,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingsItem(Icons.storage, 'Data Storage'),
           SizedBox(height: 12),
           _buildSettingsItem(Icons.privacy_tip, 'Confidentiality Politics'),
+          SizedBox(height: 12),
+          _buildSettingsItem(Icons.info, 'Application Information'),
           SizedBox(height: 8),
           // const Center(
           //   child: Text(

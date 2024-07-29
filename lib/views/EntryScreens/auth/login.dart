@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
     TextEditingController(),
     TextEditingController(),
   ];
-  bool isObscure = false;
+  bool isObscure = true;
   @override
   void dispose() {
     _controllers.forEach((element) {
@@ -103,8 +103,8 @@ class _LoginState extends State<Login> {
                                   });
                                 },
                                 child: isObscure
-                                    ? const Icon(Icons.visibility_off)
-                                    : const Icon(Icons.visibility),
+                                    ? const Icon(Icons.visibility)
+                                    : const Icon(Icons.visibility_off),
                               ),
                               border: const OutlineInputBorder(
                                 borderRadius:
@@ -199,18 +199,14 @@ class _LoginState extends State<Login> {
       required String pw,
       String? link}) async {
     Server().server.authStore.clear();
-    UserModel? model;
-    late Map<String, dynamic> data;
+
     try {
-      final user = User().instance;
+      final user = UserViewmodel().instance;
 
       await user.authWithPassword(email, pw).then((value) {
-        // setState(() {
-        //   data = value.record!.data;
+        final test = Server().server.authStore.model;
 
-        //   model = UserModel.userGenerator(data);
-        //   model.toString();
-        // });
+        print("user email is ${test}");
       });
 
       SnackBarMessenger().stateSnackMessenger(
@@ -221,10 +217,6 @@ class _LoginState extends State<Login> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: ((context) => const ConfirmationPage())));
       });
-
-      // RecordModel test = Server().server.authStore.model;
-
-      // print("user email is ${test.data['username']}");
     } on ClientException catch (e) {
       ErrorModal.showErrorDialog(context,
           "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");

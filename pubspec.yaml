@@ -45,7 +45,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   qr_flutter: ^4.1.0
   # currency_converter: ^2.0.0
-  intl: ^0.18.1
+  # intl: ^0.18.1
 
   otp: ^3.1.4
   twilio_flutter: ^0.9.0
