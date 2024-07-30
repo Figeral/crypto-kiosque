@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/views/EntryScreens/onboardign.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/Maincontent.dart';
 

@@ -101,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 ListTile(
                   subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: SizedBox(
                       width: screenSize.width * 0.4,
                       height: screenSize.width * 0.4,
@@ -132,13 +132,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                ListTile(
+                const ListTile(
                   title: Text(
                     'Personal Information',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 20,
                     ),
                   ),
                 ),
@@ -153,9 +153,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 8), // Espace entre l'icône et le texte
                           Text('User Name',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: AppColors.greyText,
                                   fontFamily: 'Inter',
-                                  fontSize: 10,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                         ],
                       ),
@@ -163,18 +163,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Text(
                             _usernamecontroller.text,
-                            style: TextStyle(
-                                color: Color(0XFF808080),
-                                fontSize: 12,
-                                fontFamily: 'Inter',
+                            style: const TextStyle(
+                                color: AppColors.greyText,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500),
                           ),
                           SizedBox(
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(Icons.edit,
-                                size: 16), // Taille de l'icône d'édition
+                            icon: Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: AppColors.greyText,
+                            ), // Taille de l'icône d'édition
                             onPressed: () {
                               updateInfo(context, "username");
                             },
@@ -196,8 +198,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 8), // Espace entre l'icône et le texte
                           Text('Email',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 10,
+                                  color: AppColors.greyText,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                         ],
                       ),
@@ -205,9 +207,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Text(
                             _emailcontroller.text,
-                            style: TextStyle(
-                                color: Color(0XFF808080),
-                                fontSize: 12,
+                            style: const TextStyle(
+                                color: AppColors.greyText,
+                                fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
@@ -215,8 +217,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(Icons.edit,
-                                size: 16), // Taille de l'icône d'édition
+                            icon: Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: AppColors.greyText,
+                            ), // Taille de l'icône d'édition
                             onPressed: () {
                               setState(() {
                                 isEditingemail = !isEditingemail;
@@ -241,10 +246,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           Icon(Icons.phone),
                           SizedBox(
                               width: 8), // Espace entre l'icône et le texte
-                          Text('phone',
+                          Text('Phone',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 10,
+                                  color: AppColors.greyText,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                         ],
                       ),
@@ -252,9 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Text(
                             _telcontroller.text,
-                            style: TextStyle(
-                                color: Color(0XFF808080),
-                                fontSize: 12,
+                            style: const TextStyle(
+                                color: AppColors.greyText,
+                                fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
@@ -262,8 +267,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(Icons.edit,
-                                size: 16), // Taille de l'icône d'édition
+                            icon: Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: AppColors.greyText,
+                            ), // Taille de l'icône d'édition
                             onPressed: () {
                               setState(() {
                                 isEditingemail = !isEditingemail;
@@ -278,34 +286,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 //
 
-                const SizedBox(height: 8),
-
-                const SizedBox(height: 14),
-                ListTile(
-                  title: Text(
-                    'Sécurité',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
                 ListTile(
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.lock),
+                          Icon(
+                            Icons.lock,
+                          ),
                           SizedBox(
                               width: 8), // Espace entre l'icône et le texte
                           Text(
-                            'pincode',
+                            'Pincode',
                             style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontSize: 10,
+                              color: AppColors.greyText,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -316,19 +312,31 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             height: 30,
                             width: 80,
-                            child: Text(isObscure
-                                ? _pincodecontroller.text
-                                : '${_pincodecontroller.text.replaceAll(RegExp(r"."), "⬮")}'),
+                            child: Text(
+                              isObscure
+                                  ? _pincodecontroller.text
+                                  : '${_pincodecontroller.text.replaceAll(RegExp(r"."), "⬮")}',
+                              style: TextStyle(
+                                color: AppColors.greyText,
+                              ),
+                            ),
                           ),
                           SizedBox(width: 8),
                           IconButton(
                             icon: isObscure
-                                ? Icon(Icons.visibility_off, size: 16)
-                                : Icon(Icons.visibility, size: 16),
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    size: 16,
+                                    color: AppColors.greyText,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    size: 16,
+                                    color: AppColors.greyText,
+                                  ),
                             onPressed: () {
                               setState(() {
                                 isObscure = !isObscure;
-                                updateInfo(context, "pincode");
                               });
                             },
                           ),
@@ -337,98 +345,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                ListTile(
-                    leading: Icon(Icons.security),
-                    title: Text(
-                      '2FA Authentification',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        fontFamily: 'Inter',
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    trailing: Transform.scale(
-                      scale: 0.5, // Ajustez cette valeur pour changer la taille
-                      child: Switch(
-                        value: is2FAEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            is2FAEnabled = value;
-                          });
-                        },
-                      ),
-                    )),
-                SizedBox(height: 14),
-                ListTile(
-                  title: Text(
-                    'Notifications',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Activer',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Radio(
-                            value: true,
-                            groupValue: isNotificationsEnabled,
-                            onChanged: (value) {
-                              setState(() {
-                                isNotificationsEnabled = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            'Désactiver',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Radio(
-                            value: false,
-                            groupValue: isNotificationsEnabled,
-                            onChanged: (value) {
-                              setState(() {
-                                isNotificationsEnabled = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 14),
+
                 ListTile(
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 12),
-                      // Espace entre le texte et le bouton
                       SizedBox(
                         width: screenSize.width * 75,
                         height: screenSize.height * .05,
@@ -568,7 +490,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   tel: int.parse(_telcontroller.text),
                                   pincode: _pincodecontroller.text);
                               break;
-                            case "username":
+                            case "pincode":
                               _userVM.updateUser(
                                   username: _usernamecontroller.text,
                                   email: _emailcontroller.text,

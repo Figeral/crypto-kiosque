@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
     TextEditingController(),
   ];
   bool isObscure = true;
+  bool isLoading = false;
   @override
   void dispose() {
     _controllers.forEach((element) {
@@ -143,23 +144,30 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                             ),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await logInUser(
-                                    context: context,
-                                    email: _controllers[0].text,
-                                    pw: _controllers[1].text);
-                              }
-                            },
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.5),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = !isLoading;
+                                      });
+                                      await logInUser(
+                                          context: context,
+                                          email: _controllers[0].text,
+                                          pw: _controllers[1].text);
+                                    }
+                                  },
+                            child: isLoading
+                                ? const CircularProgressIndicator.adaptive()
+                                : Text(
+                                    'Login',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                            .withOpacity(0.5),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
                           ),
                         ),
                       ],
@@ -203,11 +211,7 @@ class _LoginState extends State<Login> {
     try {
       final user = UserViewmodel().instance;
 
-      await user.authWithPassword(email, pw).then((value) {
-        final test = Server().server.authStore.model;
-
-        print("user email is ${test}");
-      });
+      await user.authWithPassword(email, pw);
 
       SnackBarMessenger().stateSnackMessenger(
           context: context,
@@ -221,6 +225,9 @@ class _LoginState extends State<Login> {
       ErrorModal.showErrorDialog(context,
           "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       print(e.toString());
       ErrorModal.showErrorDialog(
           context, e.toString().split("message:")[1].split(",")[0]);

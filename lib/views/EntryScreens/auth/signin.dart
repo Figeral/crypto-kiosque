@@ -27,9 +27,10 @@ class _SigninPageState extends State<SigninPage> {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
-    TextEditingController()
+    TextEditingController(),
+    TextEditingController(),
   ];
-
+  bool isLoading = false;
   @override
   void dispose() {
     _controllers.forEach((e) => e.dispose());
@@ -197,6 +198,42 @@ class _SigninPageState extends State<SigninPage> {
                           height: 10.0,
                         ),
                         Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 5, 30, 10),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .4,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.contains("*") ||
+                                        value!.contains("#")) {
+                                      return "pincode should  not contain special characters";
+                                    }
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.phone,
+                                  controller: _controllers[4],
+                                  obscureText: isObscure,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(4),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: "pincode",
+                                    border: const OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 50),
                           child: ElevatedButton(
                             style: ButtonStyle(
@@ -210,26 +247,34 @@ class _SigninPageState extends State<SigninPage> {
                                 ),
                               ),
                             ),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await addUser(
-                                  context: context,
-                                  userName: '',
-                                  email: _controllers[0].text,
-                                  tel: int.parse(_code + _controllers[1].text),
-                                  pw: _controllers[3].text,
-                                );
-                              }
-                            },
-                            child: Text(
-                              'SignIn',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.5),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      await addUser(
+                                          context: context,
+                                          userName: '',
+                                          email: _controllers[0].text,
+                                          tel: int.parse(
+                                              _code + _controllers[1].text),
+                                          pw: _controllers[3].text,
+                                          pincode: _controllers[4].text);
+                                    }
+                                  },
+                            child: isLoading
+                                ? const CircularProgressIndicator.adaptive()
+                                : Text(
+                                    'SignIn',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                            .withOpacity(0.5),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
                           ),
                         ),
                       ],
@@ -270,7 +315,7 @@ class _SigninPageState extends State<SigninPage> {
       required String email,
       required int tel,
       required String pw,
-      String? link}) async {
+      required String pincode}) async {
     try {
       final user = UserViewmodel().instance;
       await user.create(body: {
@@ -278,7 +323,8 @@ class _SigninPageState extends State<SigninPage> {
         "email": email,
         "telephone": tel,
         'password': pw,
-        'passwordConfirm': pw
+        'passwordConfirm': pw,
+        "pincode": pincode
       });
       SnackBarMessenger().stateSnackMessenger(
           context: context,
@@ -291,6 +337,9 @@ class _SigninPageState extends State<SigninPage> {
       print(e.toString());
       ErrorModal.showErrorDialog(
           context, e.toString().split("message:")[1].split(",")[0]);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

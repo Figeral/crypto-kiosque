@@ -1,6 +1,7 @@
 import 'package:pocketbase/pocketbase.dart';
 import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
+import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 
 class TransactionViewmodel {
   final _transactionCollection = Server().server;
@@ -37,5 +38,21 @@ class TransactionViewmodel {
   }) async {
     return await instance.update(_transactionCollection.authStore.model.id,
         body: {"username": username, "email": email, "telephone": tel});
+  }
+
+  Future<dynamic> getMessage() async {
+    return await instance.getFullList(
+      sort: '-created',
+      expand: 'user',
+      filter: "user='${Server().server.authStore.model.id}'",
+    );
+  }
+
+  Future<List<dynamic>> fetchMessage() async {
+    List<dynamic> data = await getMessage();
+    instance.subscribe('*', (e) async {
+      data = await getMessage();
+    });
+    return data;
   }
 }

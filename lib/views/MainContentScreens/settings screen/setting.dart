@@ -4,6 +4,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/profilePage/profile.dart';
+import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/paage.dart';
 
 //  import 'package:ecowatt/pages/home_page.dart';
 
@@ -45,20 +46,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
           SizedBox(height: 16),
-          _buildSettingsItem(Icons.person, 'Account'),
+          _buildSettingsItem(Icons.person, 'Account', const ProfilePage()),
 
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.lock, "Password and Access"),
+          _buildSettingsItem(Icons.lock, "Password and Access", const SettingPage()),
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.language, 'Language'),
+          _buildSettingsItem(Icons.language, 'Language', const SettingPage()),
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.notifications, 'Notifications'),
+          _buildSettingsItem(
+              Icons.notifications, 'Notifications', const SettingPage()),
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.storage, 'Data Storage'),
+          _buildSettingsItem(Icons.storage, 'Data Storage', const SettingPage()),
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.privacy_tip, 'Confidentiality Politics'),
+          _buildSettingsItem(
+              Icons.privacy_tip, 'Confidentiality Politics', const SettingPage()),
           SizedBox(height: 12),
-          _buildSettingsItem(Icons.info, 'Application Information'),
+          _buildSettingsItem(
+              Icons.info, 'Application Information', const SettingPage()),
           SizedBox(height: 8),
           // const Center(
           //   child: Text(
@@ -75,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingsItem(IconData icon, String title) {
+  Widget _buildSettingsItem(IconData icon, String title, Widget destination) {
     return SizedBox(
       height: 50,
       child: ListTile(
@@ -94,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProfilePage()),
+            MaterialPageRoute(builder: (context) => destination),
           );
         },
       ),
