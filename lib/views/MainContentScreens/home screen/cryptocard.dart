@@ -3,14 +3,14 @@ import 'package:crypto_kiosque/utils/app_colors.dart';
 
 class CryptoCard extends StatelessWidget {
   CryptoCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.symbol,
     required this.currentPrice,
     required this.percentageChange1h,
     required this.percentageChange24h,
     required this.marketCap,
-  }) : super(key: key);
+  });
 
   String name;
   String symbol;
@@ -45,7 +45,7 @@ class CryptoCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Image.network(
-                          "https://assets.coincap.io/assets/icons/${symbol}@2x.png"),
+                          "https://assets.coincap.io/assets/icons/$symbol@2x.png"),
                     ),
                   ),
                 ),
@@ -90,7 +90,7 @@ class CryptoCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "\%${percentageChange1h.toStringAsFixed(2)}",
+                        "%${percentageChange1h.toStringAsFixed(2)}",
                         style: TextStyle(
                           color: percentageChange1h > percentageChange24h
                               ? Colors.greenAccent.shade400

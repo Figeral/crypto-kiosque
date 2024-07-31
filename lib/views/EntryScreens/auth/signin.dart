@@ -1,16 +1,12 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:twilio_flutter/twilio_flutter.dart';
-import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:crypto_kiosque/utils/snackbars.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
-import 'package:crypto_kiosque/views/EntryScreens/auth/recovery.dart';
-import 'package:crypto_kiosque/views/EntryScreens/auth/confirmation.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -33,7 +29,9 @@ class _SigninPageState extends State<SigninPage> {
   bool isLoading = false;
   @override
   void dispose() {
-    _controllers.forEach((e) => e.dispose());
+    for (var e in _controllers) {
+      e.dispose();
+    }
     super.dispose();
   }
 
@@ -53,11 +51,11 @@ class _SigninPageState extends State<SigninPage> {
                   alignment: Alignment.topCenter,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 5, 30, 25),
+                  padding: const EdgeInsets.fromLTRB(30, 5, 30, 25),
                   child: Column(
                     children: [
                       const Text(
-                        "Let\'s get started ",
+                        "Let's get started ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
                       ),
@@ -85,6 +83,7 @@ class _SigninPageState extends State<SigninPage> {
                               if (!(value!.contains("@"))) {
                                 return "The email format is incorrect";
                               }
+                              return null;
                             },
                             controller: _controllers[0],
                             decoration: const InputDecoration(
@@ -103,6 +102,7 @@ class _SigninPageState extends State<SigninPage> {
                               if (value!.length < 9) {
                                 return "Phone number too short , atleast 9 digit needed";
                               }
+                              return null;
                             },
                             onChanged: (value) => setState(() =>
                                 _textCounter = _controllers[1].text.length),
@@ -120,7 +120,7 @@ class _SigninPageState extends State<SigninPage> {
                                     _code = value.toString();
                                   });
                                 },
-                                dialogSize: Size(500, 450),
+                                dialogSize: const Size(500, 450),
                                 hideMainText: true,
                                 showFlagMain: true,
                                 showFlag: true,
@@ -143,6 +143,7 @@ class _SigninPageState extends State<SigninPage> {
                               if (value!.length <= 4) {
                                 return "Passord too short , atleast 5 characters needed";
                               }
+                              return null;
                             },
                             controller: _controllers[2],
                             decoration: InputDecoration(
@@ -173,6 +174,7 @@ class _SigninPageState extends State<SigninPage> {
                                   _controllers[3].text) {
                                 return "input different from password";
                               }
+                              return null;
                             },
                             controller: _controllers[3],
                             decoration: InputDecoration(
@@ -206,7 +208,7 @@ class _SigninPageState extends State<SigninPage> {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value!.contains("*") ||
-                                        value!.contains("#")) {
+                                        value.contains("#")) {
                                       return "pincode should  not contain special characters";
                                     }
                                     return null;
@@ -218,9 +220,9 @@ class _SigninPageState extends State<SigninPage> {
                                     LengthLimitingTextInputFormatter(4),
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "pincode",
-                                    border: const OutlineInputBorder(
+                                    border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
                                     ),

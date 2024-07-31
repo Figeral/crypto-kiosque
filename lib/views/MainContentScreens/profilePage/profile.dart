@@ -1,13 +1,8 @@
 import 'dart:io';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
-import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/views/EntryScreens/auth/login.dart';
 
@@ -81,12 +76,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+          backgroundColor: const Color.fromARGB(0, 255, 255, 255),
           elevation: 0,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.5),
+            preferredSize: const Size.fromHeight(0.5),
             child: Container(
-              color: Color(0xFFE6E6E6),
+              color: const Color(0xFFE6E6E6),
               height: 0.5,
             ),
           ),
@@ -168,11 +163,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               size: 16,
                               color: AppColors.greyText,
@@ -213,11 +208,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               size: 16,
                               color: AppColors.greyText,
@@ -263,11 +258,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width:
                                   8), // Espace entre l'email et l'icône d'édition
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               size: 16,
                               color: AppColors.greyText,
@@ -315,21 +310,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               isObscure
                                   ? _pincodecontroller.text
-                                  : '${_pincodecontroller.text.replaceAll(RegExp(r"."), "⬮")}',
-                              style: TextStyle(
+                                  : _pincodecontroller.text.replaceAll(RegExp(r"."), "⬮"),
+                              style: const TextStyle(
                                 color: AppColors.greyText,
                               ),
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           IconButton(
                             icon: isObscure
-                                ? Icon(
+                                ? const Icon(
                                     Icons.visibility_off,
                                     size: 16,
                                     color: AppColors.greyText,
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.visibility,
                                     size: 16,
                                     color: AppColors.greyText,
@@ -416,7 +411,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25)),
                 child: UpdateWidget(scenario, controller)),
@@ -425,7 +420,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget UpdateWidget(String scenario, TextEditingController controller) {
-    final _formkey = GlobalKey<FormState>();
+    final formkey = GlobalKey<FormState>();
     return Scaffold(
       body: Center(
         child: Column(

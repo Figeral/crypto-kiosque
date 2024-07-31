@@ -1,13 +1,10 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/models/app_modal/destion_icons.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/home%20screen/home.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/profilePage/profile.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/setting.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/history_page.dart';
-import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/support_client%20screen/support_client.dart';
 
 class MainContent extends StatefulWidget {
@@ -19,10 +16,10 @@ class MainContent extends StatefulWidget {
 
 class _MainContentState extends State<MainContent> {
   final destination = [
-    DestinationIcons(icon: Icon(Icons.home), label: "Home"),
-    DestinationIcons(icon: Icon(Icons.history), label: "History"),
-    DestinationIcons(icon: Icon(Icons.chat), label: "Support"),
-    DestinationIcons(icon: Icon(Icons.settings), label: "Setting")
+    DestinationIcons(icon: const Icon(Icons.home), label: "Home"),
+    DestinationIcons(icon: const Icon(Icons.history), label: "History"),
+    DestinationIcons(icon: const Icon(Icons.chat), label: "Support"),
+    DestinationIcons(icon: const Icon(Icons.settings), label: "Setting")
   ];
   navItem() {
     return destination
@@ -71,7 +68,7 @@ class _MainContentState extends State<MainContent> {
           ? AppColors.deepPurple
           : Theme.of(context).scaffoldBackgroundColor,
       leading: IconButton(
-        icon: Icon(Icons.menu),
+        icon: const Icon(Icons.menu),
         onPressed: () {},
       ),
       actions: [

@@ -1,7 +1,5 @@
 import 'package:pocketbase/pocketbase.dart';
-import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
-import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 
 class TransactionViewmodel {
   final _transactionCollection = Server().server;

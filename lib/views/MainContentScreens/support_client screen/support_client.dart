@@ -20,7 +20,7 @@ class _SupportPageState extends State<SupportPage> {
             //color: Colors.blueAccent.shade400,
             width: screenSize.width * 0.8,
             height: screenSize.height * 0.4,
-            child: Text("Support client"),
+            child: const Text("Support client"),
           ),
         ),
       ],

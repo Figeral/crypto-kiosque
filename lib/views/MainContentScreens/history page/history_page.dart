@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/soldTransaction.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/allTranscations.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/history%20page/boughtTransaction.dart';
@@ -35,7 +33,7 @@ class _HistoryPageState extends State<HistoryPage>
                 child: SizedBox(
                   width: screenSize.width * 0.875,
                   //height: 80,
-                  child: Card(
+                  child: const Card(
                     elevation: 2,
                     // color: AppColors.lightPurple.withOpacity(0.2),
                   ),

@@ -1,5 +1,4 @@
 import 'package:otp/otp.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:crypto_kiosque/utils/snackbars.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
-import 'package:crypto_kiosque/views/EntryScreens/auth/signin.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/Maincontent.dart';
 
 class ConfirmationPage extends StatefulWidget {
@@ -26,7 +24,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
     TextEditingController(),
     TextEditingController(),
   ];
-  RecordModel _userModel = Server().server.authStore.model;
+  final RecordModel _userModel = Server().server.authStore.model;
   String _otp = '';
 
   @override
@@ -41,9 +39,9 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
 
   @override
   void dispose() {
-    _controller.forEach((element) {
+    for (var element in _controller) {
       element.dispose();
-    });
+    }
     super.dispose();
   }
 
@@ -58,13 +56,14 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
           // toNumber: "+" + _userModel.data["telephone"].toString(),
           messageBody: "your code : $otp");
       print(res);
-    } on TwilioFlutterException catch (e) {
+    } on TwilioFlutterException {
       ErrorModal.showErrorDialog(context,
           "Error during send code \n check your internet connection or phone number and  restart again");
     }
   }
 
   final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return SafeArea(
@@ -83,7 +82,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                   alignment: Alignment.topCenter,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 5, 30, 25),
+                  padding: const EdgeInsets.fromLTRB(30, 5, 30, 25),
                   child: Column(
                     children: [
                       const Text(
@@ -306,7 +305,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                                           _controller[1].text +
                                           _controller[2].text +
                                           _controller[3].text) {
-                                    Future.delayed(Duration(seconds: 3), () {
+                                    Future.delayed(const Duration(seconds: 3), () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: ((context) =>

@@ -1,14 +1,8 @@
 import 'dart:math' as math;
-import 'package:http/http.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:pocketbase/pocketbase.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
-import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/models/transaction_model.dart';
 import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/viewmodels/crypto_selecor.dart';
@@ -51,7 +45,9 @@ class _BuyTransactionState extends State<BuyTransaction> {
   @override
   void dispose() {
     super.dispose();
-    _controller.forEach((element) => element.dispose());
+    for (var element in _controller) {
+      element.dispose();
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -106,7 +102,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                   child: TextFormField(
                                     validator: (value) {
                                       if (_scanBarcode == null ||
-                                          _scanBarcode!.length < 1) {
+                                          _scanBarcode!.isEmpty) {
                                         return "must input wallet address";
                                       }
                                       return null;
@@ -156,7 +152,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                                 hintText: 'Mobile Money number',
-                                suffix: Text("${_textCounter}/9"),
+                                suffix: Text("$_textCounter/9"),
                               ),
                             ),
                             const SizedBox(height: 12.0),
@@ -174,7 +170,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                                     },
                                     controller: _controller[2],
                                     keyboardType:
-                                        TextInputType.numberWithOptions(
+                                        const TextInputType.numberWithOptions(
                                             decimal: true),
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(9),
@@ -270,7 +266,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
   }
 
   Future<dynamic> purchaseDialog(BuildContext context) async {
-    final _transaction = TransactionModel(
+    final transaction = TransactionModel(
       wallet: _scanBarcode!,
       phone: int.parse(_controller[1].text),
       amount: double.parse(_controller[2].text),
@@ -287,7 +283,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
               title: const Text("Confirmation"),
               children: [
                 Text(
-                  "Purchase Operation ordered by ${_transaction.phone}  willing to recharge ${_transaction.amount}  ${_transaction.crypto} coins in his wallet ${_transaction.wallet} \n which is actually at ${double.parse(cryptoInfo.split("+")[1]).toStringAsFixed(3)} \$  Using ${_transaction.payment} method \n\n enter your code pin to confirm",
+                  "Purchase Operation ordered by ${transaction.phone}  willing to recharge ${transaction.amount}  ${transaction.crypto} coins in his wallet ${transaction.wallet} \n which is actually at ${double.parse(cryptoInfo.split("+")[1]).toStringAsFixed(3)} \$  Using ${transaction.payment} method \n\n enter your code pin to confirm",
                 ),
                 const SizedBox(
                   height: 10,
@@ -331,7 +327,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
                             if (sendKey.currentState!.validate()) {
                               try {
                                 await TransactionViewmodel().createTransaction(
-                                    json: _transaction.toJson());
+                                    json: transaction.toJson());
                                 Navigator.of(context).pop();
                               } catch (e) {
                                 // print(e.toString());
@@ -431,7 +427,7 @@ class _BuyTransactionState extends State<BuyTransaction> {
             },
             icon: Transform.rotate(
               angle: (math.pi / 4),
-              child: Icon(
+              child: const Icon(
                 Icons.add,
                 size: 40,
               ),
@@ -455,7 +451,7 @@ class CryptoName extends StatelessWidget {
             changeName(snapshot.data.toString());
             return Text(
               snapshot.data.toString().split('+')[0],
-              style: TextStyle(
+              style: const TextStyle(
                 // color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

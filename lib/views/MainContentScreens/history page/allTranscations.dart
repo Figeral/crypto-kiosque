@@ -1,7 +1,5 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
-import 'package:crypto_kiosque/models/transaction_model.dart';
 import 'package:crypto_kiosque/viewmodels/TransactionViewModel.dart';
 
 class AllTransactions extends StatefulWidget {
@@ -58,9 +56,9 @@ class _AllTransactionsState extends State<AllTransactions> {
 
 class CryptoMessage extends StatelessWidget {
   CryptoMessage({
-    Key? key,
+    super.key,
     required this.json,
-  }) : super(key: key);
+  });
 
   Map<String, dynamic> json;
 
@@ -92,7 +90,7 @@ class CryptoMessage extends StatelessWidget {
                     child: Text(json['crypto']),
                   ),
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ErrorModal {
@@ -13,7 +12,7 @@ class ErrorModal {
             onPressed: () {
               Navigator.of(ctx).pop();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),

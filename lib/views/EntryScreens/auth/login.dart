@@ -1,11 +1,7 @@
-import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:crypto_kiosque/utils/snackbars.dart';
-import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:crypto_kiosque/utils/errors_messages.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
@@ -30,9 +26,9 @@ class _LoginState extends State<Login> {
   bool isLoading = false;
   @override
   void dispose() {
-    _controllers.forEach((element) {
+    for (var element in _controllers) {
       element.dispose();
-    });
+    }
     super.dispose();
   }
 
@@ -52,7 +48,7 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.topCenter,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 5, 30, 25),
+                  padding: const EdgeInsets.fromLTRB(30, 5, 30, 25),
                   child: Column(
                     children: [
                       const Text(
@@ -120,7 +116,7 @@ class _LoginState extends State<Login> {
                               //style: ButtonStyle(),
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => RecoveryPage()));
+                                    builder: (context) => const RecoveryPage()));
                               },
                               child: const Text(
                                 "forgot Password ?",
@@ -217,11 +213,11 @@ class _LoginState extends State<Login> {
           context: context,
           message: "A confirmation code was send to your address",
           type: "pending");
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: ((context) => const ConfirmationPage())));
       });
-    } on ClientException catch (e) {
+    } on ClientException {
       ErrorModal.showErrorDialog(context,
           "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
     } catch (e) {

@@ -37,7 +37,7 @@ class _SellTransactionState extends State<SellTransaction> {
             },
             icon: Transform.rotate(
               angle: (math.pi / 4),
-              child: Icon(
+              child: const Icon(
                 Icons.add,
                 size: 40,
               ),

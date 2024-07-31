@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto_kiosque/models/crypto_model.dart';
 import 'package:crypto_kiosque/Configs/crypto_endpoint.dart';
@@ -39,9 +38,9 @@ class CryptoViewModel {
 
     print(" before de desirialization  ${data.first} \n \n");
     List<CryptoModel> result = [];
-    data.forEach((element) {
+    for (var element in data) {
       result.add(CryptoModel.fromJson(element));
-    });
+    }
 
     final t = result
         .map((crypto) => [

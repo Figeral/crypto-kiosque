@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -21,10 +20,6 @@ class _OnboardState extends State<Onboard> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +153,7 @@ Widget PageDetail(
     Widget? button}) {
   return Padding(
     padding: EdgeInsets.fromLTRB(0, sWidth * 0, 0, sWidth * 0.3),
-    child: Container(
+    child: SizedBox(
       //color: Colors.grey,
       width: sWidth,
       height: sHeight * 0.50,

@@ -1,5 +1,3 @@
-import 'package:http/http.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
 

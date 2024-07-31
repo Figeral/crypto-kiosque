@@ -1,12 +1,5 @@
-import 'package:otp/otp.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:pocketbase/pocketbase.dart';
-import 'package:crypto_kiosque/models/usermodel.dart';
 import 'package:crypto_kiosque/utils/app_colors.dart';
-import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/viewmodels/user_viewmodel.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/action%20buttons/transcation_actions.dart';
 
@@ -26,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final _user = UserViewmodel().currentUser;
+    final user = UserViewmodel().currentUser;
     return Scaffold(
       floatingActionButton: TransactionActionButton(context: context),
       body: Container(
@@ -49,8 +42,8 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             Text(
-                              _user.username,
-                              style: TextStyle(
+                              user.username,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ),
                           ],

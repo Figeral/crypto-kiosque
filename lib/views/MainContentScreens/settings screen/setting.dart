@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/usermodel.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:crypto_kiosque/Configs/backend_server.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/profilePage/profile.dart';
 import 'package:crypto_kiosque/views/MainContentScreens/settings%20screen/paage.dart';
@@ -16,28 +15,28 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  RecordModel? _model = Server().server.authStore.model;
+  final RecordModel? _model = Server().server.authStore.model;
   @override
   Widget build(BuildContext context) {
-    final _user = UserModel.userGenerator(_model!.data);
+    final user = UserModel.userGenerator(_model!.data);
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
         children: [
           Row(
             children: [
-              SizedBox(width: 18),
-              Container(
+              const SizedBox(width: 18),
+              const SizedBox(
                 width: 50.0,
                 height: 50.0,
                 child: CircleAvatar(
                   backgroundImage: AssetImage('assets/images/user.png'),
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Text(
-                _user.username,
-                style: TextStyle(
+                user.username,
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontFamily: 'Inter',
@@ -45,25 +44,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _buildSettingsItem(Icons.person, 'Account', const ProfilePage()),
 
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(Icons.lock, "Password and Access", const SettingPage()),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(Icons.language, 'Language', const SettingPage()),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(
               Icons.notifications, 'Notifications', const SettingPage()),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(Icons.storage, 'Data Storage', const SettingPage()),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(
               Icons.privacy_tip, 'Confidentiality Politics', const SettingPage()),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _buildSettingsItem(
               Icons.info, 'Application Information', const SettingPage()),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           // const Center(
           //   child: Text(
           //     'Powered by Arthur Kemdjo',
@@ -83,13 +82,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SizedBox(
       height: 50,
       child: ListTile(
-        trailing: Icon(Icons.keyboard_arrow_right_outlined),
+        trailing: const Icon(Icons.keyboard_arrow_right_outlined),
         // selected: true,
         titleAlignment: ListTileTitleAlignment.center,
         leading: Icon(icon),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black,
               fontSize: 20,
               fontFamily: 'Inter',
