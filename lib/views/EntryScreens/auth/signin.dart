@@ -336,12 +336,12 @@ class _SigninPageState extends State<SigninPage> {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: ((context) => const Login())));
     } catch (e) {
-      print(e.toString());
-      ErrorModal.showErrorDialog(
-          context, e.toString().split("message:")[1].split(",")[0]);
       setState(() {
         isLoading = false;
       });
+      print(e.toString());
+      ErrorModal.showErrorDialog(
+          context, e.toString().split("message:")[1].split(",")[0]);
     }
   }
 }

@@ -218,6 +218,9 @@ class _LoginState extends State<Login> {
             builder: ((context) => const ConfirmationPage())));
       });
     } on ClientException {
+      setState(() {
+        isLoading = false;
+      });
       ErrorModal.showErrorDialog(context,
           "Failed to load \n probably no  Internet connection . Check your internet connection status and restart again");
     } catch (e) {
